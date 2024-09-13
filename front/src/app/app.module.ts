@@ -37,8 +37,14 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
         HeaderComponent,
         NotFoundComponent,
     ],
-    bootstrap: [AppComponent], imports: [BrowserModule,
-        AppRoutingModule], providers: [
+    bootstrap: [AppComponent], 
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        MatButtonModule,
+        BrowserAnimationsModule,
+      ], 
+      providers: [
         provideClientHydration(),
         { provide: LOCALE_ID, useValue: 'fr-FR' },
         provideAnimationsAsync(),
