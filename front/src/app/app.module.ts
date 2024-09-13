@@ -1,4 +1,4 @@
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { NgModule, LOCALE_ID } from '@angular/core';
 import { BrowserModule, provideClientHydration, } from '@angular/platform-browser';
 import { MatButtonModule } from '@angular/material/button';
@@ -22,34 +22,28 @@ import { NotFoundComponent } from './pages/not-found/not-found.component';
 import { HomeComponent } from './pages/home/home.component';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
-@NgModule({
-  declarations: [
-    AppComponent,
-    HomeComponent,
-    TopicComponent,
-    RegisterComponent,
-    LoginComponent,
-    ArticlesComponent,
-    TopicsComponent,
-    ArticleComponent,
-    CreateArticleComponent,
-    ArticleDetailComponent,
-    ProfileComponent,
-    HeaderComponent,
-    NotFoundComponent,
-  ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    HttpClientModule,
-  ],
-  providers: [
-    provideClientHydration(),
-    { provide: LOCALE_ID, useValue: 'fr-FR' },
-    provideAnimationsAsync(),
-  ],
-  bootstrap: [AppComponent]
-})
+@NgModule({ declarations: [
+        AppComponent,
+        HomeComponent,
+        TopicComponent,
+        RegisterComponent,
+        LoginComponent,
+        ArticlesComponent,
+        TopicsComponent,
+        ArticleComponent,
+        CreateArticleComponent,
+        ArticleDetailComponent,
+        ProfileComponent,
+        HeaderComponent,
+        NotFoundComponent,
+    ],
+    bootstrap: [AppComponent], imports: [BrowserModule,
+        AppRoutingModule], providers: [
+        provideClientHydration(),
+        { provide: LOCALE_ID, useValue: 'fr-FR' },
+        provideAnimationsAsync(),
+        provideHttpClient(withInterceptorsFromDi()),
+    ] })
 export class AppModule {
   constructor() {
     registerLocaleData(fr.default);
