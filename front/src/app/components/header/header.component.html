@@ -1,1 +1,11 @@
-<p>header works!</p>
+<header>
+    <img src="/assets/logo_p6.png" alt="logo" class="logo"/>
+    <div *ngIf="loggedUser" class="loggedUserButtons">
+        <button mat-button routerLink="/articles">Articles</button>
+        <button mat-button routerLink="/topics">Thèmes</button>
+        <button mat-icon-button class="ppButton">
+          <img src="/assets/user.png" alt="Profile" class="profile-image">
+        </button>
+
+    </div>
+</header>

@@ -1,1 +1,10 @@
-<p>article works!</p>
+<mat-card>
+    <mat-card-title>{{ article.title }}</mat-card-title>
+    <mat-card-subtitle>
+      <span>{{ article.date | date }}</span>
+      <span>{{ article.author }}</span>
+    </mat-card-subtitle>
+    <mat-card-content>
+      <p>{{ article.content }}</p>
+    </mat-card-content>
+  </mat-card>
