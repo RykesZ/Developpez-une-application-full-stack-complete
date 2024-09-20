@@ -10,6 +10,19 @@
   
   .articles-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 20px;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 50px 30px; /* 50px entre les lignes, 30px entre les colonnes */
+  }
+  
+  .article-item {
+    width: 100%;
+  }
+  
+  /* Ces classes ne sont plus nécessaires avec Grid, mais on peut les garder pour un positionnement spécifique si besoin */
+  .left-column {
+    justify-self: start;
+  }
+  
+  .right-column {
+    justify-self: end;
   }

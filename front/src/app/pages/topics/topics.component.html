@@ -1,1 +1,9 @@
-<p>topics works!</p>
+<div class="topics-container">
+    <h2>Thèmes populaires</h2>
+    <div class="topics-grid">
+      <app-topic *ngFor="let topic of topics"
+                 [title]="topic.title"
+                 [description]="topic.description">
+      </app-topic>
+    </div>
+  </div>

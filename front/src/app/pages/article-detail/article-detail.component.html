@@ -1,1 +1,33 @@
-<p>article-detail works!</p>
+<div class="article-detail-container">
+    <a routerLink="/articles" class="back-link">
+      <mat-icon>arrow_back</mat-icon>
+    </a>
+    <h1>{{ article.title }}</h1>
+    
+    <div class="article-meta">
+      <span>{{ article.date | date }}</span>
+      <span>{{ article.author }}</span>
+      <span>{{ article.theme }}</span>
+    </div>
+    
+    <p class="article-content">{{ article.content }}</p>
+    
+    <hr>
+    
+    <div class="comments-section">
+      <h2>Commentaires</h2>
+      <div *ngFor="let comment of comments" class="comment">
+        <strong>{{ comment.username }}</strong>
+        <p>{{ comment.content }}</p>
+      </div>
+      
+      <div class="comment-form">
+        <mat-form-field appearance="outline" class="full-width">
+          <textarea matInput placeholder="Écrivez ici votre commentaire" [(ngModel)]="newComment"></textarea>
+        </mat-form-field>
+        <button mat-icon-button color="primary" (click)="submitComment()">
+          <mat-icon>send</mat-icon>
+        </button>
+      </div>
+    </div>
+  </div>

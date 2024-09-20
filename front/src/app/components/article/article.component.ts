@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-article',
@@ -7,4 +8,14 @@ import { Component, Input } from '@angular/core';
 })
 export class ArticleComponent {
   @Input() article: any;
+
+  constructor(private router: Router) {}
+
+  navigateToDetail() {
+    if (this.article && this.article.id) {
+      this.router.navigate(['/article-detail', this.article.id]);
+    } else {
+      console.error('Article ID is missing');
+    }
+  }
 }

@@ -1,1 +1,30 @@
-<p>create-article works!</p>
+<div class="create-article-container">
+    <h1>Créer un nouvel article</h1>
+    <form [formGroup]="articleForm" (ngSubmit)="onSubmit()">
+
+        <mat-form-field appearance="outline">
+            <mat-label>Thème</mat-label>
+            <mat-select formControlName="topicId" required>
+              <ng-container *ngIf="topics$ | async as topics">
+                <mat-option *ngFor="let topic of topics" [value]="topic.id">
+                  {{topic.title}}
+                </mat-option>
+              </ng-container>
+            </mat-select>
+          </mat-form-field>
+
+        <mat-form-field appearance="outline">
+            <mat-label>Titre</mat-label>
+            <input matInput formControlName="title" required>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+            <mat-label>Contenu</mat-label>
+            <textarea matInput formControlName="content" rows="10" required></textarea>
+        </mat-form-field>
+
+        <button mat-raised-button color="primary" type="submit" [disabled]="!articleForm.valid">
+            Créer l'article
+        </button>
+    </form>
+</div>

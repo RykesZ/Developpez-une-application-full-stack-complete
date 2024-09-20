@@ -1,0 +1,11 @@
+.topics-container {
+    padding: 20px;
+  }
+  h2 {
+    margin-bottom: 20px;
+  }
+  .topics-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 50px 30px; /* 50px entre les lignes, 30px entre les colonnes */
+  }

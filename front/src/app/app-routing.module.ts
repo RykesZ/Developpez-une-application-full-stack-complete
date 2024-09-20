@@ -12,7 +12,7 @@ import { TopicsComponent } from './pages/topics/topics.component';
 
 const routes: Routes = [
   {
-    path: 'article-detail',
+    path: 'article-detail/:id',
     component: ArticleDetailComponent,
   },
   {
