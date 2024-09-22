@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { LoginRequest } from 'app/core/interfaces/loginRequest.interface';
 
 @Component({
   selector: 'app-login',
@@ -9,6 +10,7 @@ import { Router } from '@angular/router';
 })
 export class LoginComponent {
   loginForm: FormGroup;
+  authService: any;
 
   constructor(
     private fb: FormBuilder,
@@ -21,6 +23,14 @@ export class LoginComponent {
   }
 
   onSubmit() {
+    if (this.loginForm.valid) {
+      const loginRequest = this.loginForm.value as LoginRequest;
+      this.authService.login(loginRequest).pipe()
+
+    }
+
+
+
     if (this.loginForm.valid) {
       console.log('Tentative de connexion', this.loginForm.value);
     }

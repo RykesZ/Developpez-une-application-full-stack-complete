@@ -2,12 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
-
-interface User {
-    id: number;
-    username: string;
-    email: string;
-}
+import { User } from '../interfaces/user.interface';
 
 @Injectable({
     providedIn: 'root'
@@ -18,7 +13,7 @@ export class UserService {
     constructor(private http: HttpClient) { }
 
     // Récupère les informations de l'utilisateur (simulé ici)
-    getUser(id: number): User {
+    public getUser(id: number): User {
         // Simuler un utilisateur pour l'exemple
         return {
             id: 0,
@@ -27,8 +22,17 @@ export class UserService {
         };
     }
 
+    public me(): Observable<User> {
+        // return this.http.get<User>(`${this.apiUrl}/me`);
+        return of({
+            id: 0,
+            username: 'JohnDoe',
+            email: 'johndoe@example.com'
+        });
+      }
+
     // Met à jour les informations de l'utilisateur
-    updateUser(user: User): Observable<any> {
+    public updateUser(user: User): Observable<any> {
         return this.http.put(`${this.apiUrl}/update`, user).pipe(
             map((response: any) => {
                 console.log('Profil mis à jour avec succès');
@@ -42,7 +46,7 @@ export class UserService {
     }
 
     // Déconnecte l'utilisateur
-    logout(): void {
+    public logout(): void {
         console.log('Déconnexion en cours...');
         // Implémenter la logique de déconnexion réelle ici (par exemple, supprimer le token de session)
         // Redirection ou suppression du token

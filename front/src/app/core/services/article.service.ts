@@ -1,6 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
+import { Comment } from '../interfaces/comment.interface';
+import { sendCommentRequest } from '../interfaces/sendCommentRequest.interface';
+import { sendArticleRequest } from '../interfaces/sendArticleRequest.interface';
+import { Article } from '../interfaces/article.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -67,8 +71,8 @@ export class ArticleService {
   ];
 
   private comments = [
-    { id: 1, articleId: 1, content: 'Premier commentaire', username: 'User1' },
-    { id: 2, articleId: 1, content: 'Deuxième commentaire', username: 'User2' },
+    { id: 0, articleId: 1, content: 'Premier commentaire', username: 'User1', userId: 0 },
+    { id: 1, articleId: 1, content: 'Deuxième commentaire', username: 'User2', userId: 1 },
     // Ajoutez d'autres commentaires
   ];
 
@@ -87,20 +91,17 @@ export class ArticleService {
     return of(article);
   }
 
-  getCommentsByArticleId(articleId: number): Observable<any[]> {
+  getCommentsByArticleId(articleId: number): Observable<Comment[]> {
     // Dans un vrai scénario, vous feriez un appel HTTP ici
     const articleComments = this.comments.filter(c => c.articleId === articleId);
     return of(articleComments);
   }
 
-  addComment(comment: any): Observable<any> {
-    // Dans un vrai scénario, vous feriez un appel HTTP POST ici
-    const newComment = { ...comment, id: this.comments.length + 1 };
-    this.comments.push(newComment);
-    return of(newComment);
+  addComment(comment: sendCommentRequest): Observable<Comment> {
+    return this.http.post<Comment>(`${this.apiUrl}/comment`, comment);
   }
 
-  createArticle(article: any): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/articles`, article);
+  createArticle(article: sendArticleRequest): Observable<Article> {
+    return this.http.post<Article>(`${this.apiUrl}/articles`, article);
   }
 }

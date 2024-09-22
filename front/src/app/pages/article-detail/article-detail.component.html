@@ -1,4 +1,4 @@
-<div class="article-detail-container">
+<div class="article-detail-container" *ngIf="article$ | async as article">
     <a routerLink="/articles" class="back-link">
       <mat-icon>arrow_back</mat-icon>
     </a>
@@ -14,7 +14,7 @@
     
     <hr>
     
-    <div class="comments-section">
+    <div class="comments-section" *ngIf="comments$ | async as comments">
       <h2>Commentaires</h2>
       <div *ngFor="let comment of comments" class="comment">
         <strong>{{ comment.username }}</strong>

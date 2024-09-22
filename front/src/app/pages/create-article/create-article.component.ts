@@ -4,12 +4,7 @@ import { ArticleService } from '../../core/services/article.service';
 import { TopicService } from '../../core/services/topic.service';
 import { Router } from '@angular/router';
 import { catchError, lastValueFrom, Observable, of } from 'rxjs';
-
-interface Topic {
-  id: string;
-  title: string;
-  description: string;
-}
+import { Topic } from 'app/core/interfaces/topic.interface';
 
 @Component({
   selector: 'app-create-article',

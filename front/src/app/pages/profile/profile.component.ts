@@ -4,12 +4,9 @@ import { Router } from '@angular/router';
 import { UserService } from 'app/core/services/user.service';
 import { SubscriptionService } from 'app/core/services/subscription.service';
 import { catchError, Observable, of } from 'rxjs';
+import { User } from '../../core/interfaces/user.interface';
+import { Topic } from 'app/core/interfaces/topic.interface';
 
-interface Subscription {
-  id: number;
-  title: string;
-  description: string;
-}
 
 @Component({
   selector: 'app-profile',
@@ -18,7 +15,7 @@ interface Subscription {
 })
 export class ProfileComponent implements OnInit {
   profileForm: FormGroup;
-  subscriptions$: Observable<Subscription[]>;
+  subscriptions$: Observable<Topic[]>;
 
   constructor(
     private fb: FormBuilder,
@@ -38,18 +35,13 @@ export class ProfileComponent implements OnInit {
     );
   }
 
-  ngOnInit(): void {
-    this.loadUserProfile();
-  }
-
-  loadUserProfile(): void {
-    const user = this.userService.getUser(0); // Récupérer l'utilisateur (simulé)
-    if (user) {
-      this.profileForm.patchValue({
+  public ngOnInit(): void {
+    this.userService.me().subscribe(
+      (user: User) => this.profileForm.patchValue({
         username: user.username,
         email: user.email
-      });
-    }
+      })
+    )
   }
 
   onSave(): void {

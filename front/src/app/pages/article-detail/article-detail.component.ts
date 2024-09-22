@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ArticleService } from '../../core/services/article.service';
+import { Article } from 'app/core/interfaces/article.interface';
+import { Comment } from 'app/core/interfaces/comment.interface';
+import { BehaviorSubject, catchError, Observable, of, switchMap, tap } from 'rxjs';
 
 @Component({
   selector: 'app-article-detail',
@@ -8,8 +11,9 @@ import { ArticleService } from '../../core/services/article.service';
   styleUrls: ['./article-detail.component.scss']
 })
 export class ArticleDetailComponent implements OnInit {
-  article: any = {};
-  comments: any[] = [];
+  article$: Observable<Article>;
+  comments$: Observable<Comment[]>;
+  private commentsSubject = new BehaviorSubject<Comment[]>([]);
   newComment: string = '';
 
   constructor(
@@ -18,51 +22,56 @@ export class ArticleDetailComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.route.params.subscribe(params => {
-      const id = +params['id']; // Le '+' convertit la chaîne en nombre
-      this.loadArticle(id);
-    });
-  }
-
-  loadArticle(id: number) {
-    this.articleService.getArticleById(id).subscribe(
-      (article) => {
-        this.article = article;
-        this.loadComments(id);
-      },
-      (error) => {
-        console.error('Erreur lors du chargement de l\'article', error);
-      }
+    this.article$ = this.route.params.pipe(
+      switchMap(params => {
+        const id = +params['id'];
+        return this.articleService.getArticleById(id).pipe(
+          catchError(error => {
+            console.error('Erreur lors du chargement de l\'article', error);
+            return of(null);
+          })
+        );
+      })
     );
-  }
 
-  loadComments(articleId: number) {
-    this.articleService.getCommentsByArticleId(articleId).subscribe(
-      (comments) => {
-        this.comments = comments;
-      },
-      (error) => {
-        console.error('Erreur lors du chargement des commentaires', error);
-      }
+    this.comments$ = this.route.params.pipe(
+      switchMap(params => {
+        const id = +params['id'];
+        return this.articleService.getCommentsByArticleId(id).pipe(
+          tap(comments => this.commentsSubject.next(comments)),
+          catchError(error => {
+            console.error('Erreur lors du chargement des commentaires', error);
+            return of([]);
+          })
+        );
+      })
     );
   }
 
   submitComment() {
     if (this.newComment.trim()) {
-      const comment = {
-        articleId: this.article.id,
-        content: this.newComment,
-        username: 'Utilisateur actuel' // À remplacer par le nom d'utilisateur réel
-      };
-      this.articleService.addComment(comment).subscribe(
-        (newComment) => {
-          this.comments.push(newComment);
+      this.article$.pipe(
+        switchMap(article => {
+          if (!article) {
+            throw new Error('Article non trouvé');
+          }
+          const comment = {
+            articleId: article.id,
+            content: this.newComment,
+            userId: 0 // à remplacer avec l'id de l'utilisateur actuel
+          };
+          return this.articleService.addComment(comment);
+        }),
+        tap(newComment => {
+          const currentComments = this.commentsSubject.value;
+          this.commentsSubject.next([...currentComments, newComment]);
           this.newComment = '';
-        },
-        (error) => {
+        }),
+        catchError(error => {
           console.error('Erreur lors de l\'ajout du commentaire', error);
-        }
-      );
+          return of(null);
+        })
+      ).subscribe();
     }
   }
 }

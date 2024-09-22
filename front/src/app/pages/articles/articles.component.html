@@ -12,7 +12,7 @@
       </mat-menu>
     </div>
     
-    <div class="articles-grid">
+    <div class="articles-grid" *ngIf="articles$ | async as articles">
         <app-article *ngFor="let article of articles; let i = index" 
                      [article]="article" 
                      class="article-item" 
