@@ -8,7 +8,7 @@ import { User } from '../interfaces/user.interface';
     providedIn: 'root'
 })
 export class UserService {
-    private apiUrl = 'https://api.exemple.com/user';  // URL fictive pour l'API utilisateur
+    private pathService = 'api/auth';
 
     constructor(private http: HttpClient) { }
 
@@ -33,7 +33,7 @@ export class UserService {
 
     // Met à jour les informations de l'utilisateur
     public updateUser(user: User): Observable<any> {
-        return this.http.put(`${this.apiUrl}/update`, user).pipe(
+        return this.http.put(`${this.pathService}/update`, user).pipe(
             map((response: any) => {
                 console.log('Profil mis à jour avec succès');
                 return response;

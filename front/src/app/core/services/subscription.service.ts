@@ -13,7 +13,7 @@ interface Subscription {
   providedIn: 'root'
 })
 export class SubscriptionService {
-  private apiUrl = 'https://api.exemple.com/subscriptions';  // URL fictive pour l'API des abonnements
+  private apiUrl = 'api/topics';
   private subscriptions = [
     { id: 1, title: 'Titre du thème', description: 'Description: lorem ipsum is simply dummy text...' },
     { id: 2, title: 'Titre du thème', description: 'Description: lorem ipsum is simply dummy text...' }
@@ -22,19 +22,18 @@ export class SubscriptionService {
   constructor(private http: HttpClient) {}
 
   // Récupère la liste des abonnements de l'utilisateur
-  getUserSubscriptions(id :number): Observable<Subscription[]> {
-    return this.http.get<Subscription[]>(`${this.apiUrl}/user/:id`).pipe(
+  getUserSubscriptions(): Observable<Subscription[]> {
+    return this.http.get<Subscription[]>(`${this.apiUrl}/subscribed`).pipe(
       catchError((error) => {
         console.error('Erreur lors du chargement des abonnements', error);
-        // return of([]);  // Renvoie un tableau vide en cas d'erreur
-        return of(this.subscriptions);
+        return of([]);  // Renvoie un tableau vide en cas d'erreur
       })
     );
   }
 
   // S'abonne à un nouveau thème
-  subscribeToTopic(topicId: string): Observable<any> {
-    return this.http.post(`${this.apiUrl}/subscribe`, { topicId }).pipe(
+  subscribeToTopic(topicId: number): Observable<any> {
+    return this.http.post(`${this.apiUrl}/subscribe/${topicId}`, {}).pipe(
       map((response: any) => {
         console.log('Abonnement réussi au thème', topicId);
         return response;
@@ -48,7 +47,7 @@ export class SubscriptionService {
 
   // Se désabonne d'un thème
   unsubscribeFromTopic(topicId: number): Observable<any> {
-    return this.http.post(`${this.apiUrl}/unsubscribe`, { topicId }).pipe(
+    return this.http.post(`${this.apiUrl}/unsubscribe/${topicId}`, {}).pipe(
       map((response: any) => {
         console.log('Désabonnement réussi du thème', topicId);
         return response;

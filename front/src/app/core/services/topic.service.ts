@@ -18,13 +18,13 @@ export class TopicService {
     { id: 6, title: 'Machine Learning', description: 'Sous-domaine de l\'intelligence artificielle' },
   ];
 
-  private apiUrl = 'http://votre-api-url.com/api';
+  private apiUrl = 'api/topics';
 
   constructor(private http: HttpClient) {}
 
   getTopics(): Observable<Topic[]> {
-    // return this.http.get<any[]>(`${this.apiUrl}/topics`);
-    return of(this.topics);
+    return this.http.get<any[]>(`${this.apiUrl}/all`);
+    // return of(this.topics);
   }
 
 }

@@ -4,5 +4,5 @@ export interface Article {
     date: string,
     author: string,
     content: string,
-    theme: string
+    topic: string
 }

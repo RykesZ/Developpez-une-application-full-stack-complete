@@ -1,9 +1,8 @@
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { NgModule, LOCALE_ID } from '@angular/core';
-import { BrowserModule, provideClientHydration, } from '@angular/platform-browser';
+import { BrowserModule, provideClientHydration } from '@angular/platform-browser';
 import { MatButtonModule } from '@angular/material/button';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ReactiveFormsModule,FormsModule  } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatCardModule } from '@angular/material/card';
@@ -31,46 +30,54 @@ import { HomeComponent } from './pages/home/home.component';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { ArticleService } from './core/services/article.service';
 import { MatOption } from '@angular/material/core';
+import { HttpClientModule, HTTP_INTERCEPTORS, provideHttpClient, withInterceptors } from '@angular/common/http';
+import { baseUrlInterceptor } from './core/interceptors/base-url.interceptor';
+import { jwtInterceptor } from './core/interceptors/jwt.interceptor';
 
-@NgModule({ declarations: [
-        AppComponent,
-        HomeComponent,
-        TopicComponent,
-        RegisterComponent,
-        LoginComponent,
-        ArticlesComponent,
-        TopicsComponent,
-        ArticleComponent,
-        CreateArticleComponent,
-        ArticleDetailComponent,
-        ProfileComponent,
-        HeaderComponent,
-        NotFoundComponent,
-    ],
-    bootstrap: [AppComponent], 
-    imports: [
-        BrowserModule,
-        AppRoutingModule,
-        MatButtonModule,
-        BrowserAnimationsModule,
-        ReactiveFormsModule,
-        MatToolbarModule,
-        MatMenuModule,
-        MatInputModule,
-        MatFormFieldModule,
-        MatCardModule,
-        MatIconModule,
-        FormsModule,
-        MatOption,
-        MatSelectModule,
-      ], 
-      providers: [
-        provideClientHydration(),
-        { provide: LOCALE_ID, useValue: 'fr-FR' },
-        provideAnimationsAsync(),
-        provideHttpClient(withInterceptorsFromDi()),
-        ArticleService
-    ] })
+@NgModule({
+  declarations: [
+    AppComponent,
+    HomeComponent,
+    TopicComponent,
+    RegisterComponent,
+    LoginComponent,
+    ArticlesComponent,
+    TopicsComponent,
+    ArticleComponent,
+    CreateArticleComponent,
+    ArticleDetailComponent,
+    ProfileComponent,
+    HeaderComponent,
+    NotFoundComponent,
+  ],
+  bootstrap: [AppComponent],
+  imports: [
+    BrowserModule,
+    HttpClientModule,
+    AppRoutingModule,
+    MatButtonModule,
+    BrowserAnimationsModule,
+    ReactiveFormsModule,
+    MatToolbarModule,
+    MatMenuModule,
+    MatInputModule,
+    MatFormFieldModule,
+    MatCardModule,
+    MatIconModule,
+    FormsModule,
+    MatOption,
+    MatSelectModule,
+  ],
+  providers: [
+    provideClientHydration(),
+    { provide: LOCALE_ID, useValue: 'fr-FR' },
+    provideAnimationsAsync(),
+    provideHttpClient(
+      withInterceptors([baseUrlInterceptor, jwtInterceptor])
+    ),
+    ArticleService
+  ]
+})
 export class AppModule {
   constructor() {
     registerLocaleData(fr.default);

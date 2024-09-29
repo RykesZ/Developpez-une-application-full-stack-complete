@@ -28,6 +28,7 @@
         <button mat-raised-button color="primary" type="submit" class="submit-button" [disabled]="registerForm.invalid">
           S'inscrire
         </button>
+        <span *ngIf="onError" class="error">An error occurred</span>
       </form>
     </div>
 </div>

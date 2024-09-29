@@ -6,6 +6,7 @@ import { SubscriptionService } from 'app/core/services/subscription.service';
 import { catchError, Observable, of } from 'rxjs';
 import { User } from '../../core/interfaces/user.interface';
 import { Topic } from 'app/core/interfaces/topic.interface';
+import { AuthService } from 'app/core/services/auth.service';
 
 
 @Component({
@@ -20,6 +21,7 @@ export class ProfileComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private userService: UserService,
+    private authService: AuthService,
     private subscriptionService: SubscriptionService,
     private router: Router
   ) {
@@ -27,7 +29,7 @@ export class ProfileComponent implements OnInit {
       username: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]]
     });
-    this.subscriptions$ = this.subscriptionService.getUserSubscriptions(1).pipe(
+    this.subscriptions$ = this.subscriptionService.getUserSubscriptions().pipe(
       catchError(error => {
         console.error('Erreur lors du chargement des thèmes', error);
         return of([]);
@@ -36,7 +38,7 @@ export class ProfileComponent implements OnInit {
   }
 
   public ngOnInit(): void {
-    this.userService.me().subscribe(
+    this.authService.me().subscribe(
       (user: User) => this.profileForm.patchValue({
         username: user.username,
         email: user.email

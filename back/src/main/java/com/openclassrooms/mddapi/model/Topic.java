@@ -1,38 +1,53 @@
 package com.openclassrooms.mddapi.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import jakarta.persistence.*;
+import lombok.*;
+
+import net.minidev.json.annotate.JsonIgnore;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "topics")
+@Getter
+@Setter
+@EqualsAndHashCode(exclude = "subscribers")
+@ToString(exclude = "subscribers")
 public class Topic {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "topic_id")
+	@Column(name = "id")
 	private Long id;
-	
+
 	@Column(nullable = false)
-	private String name;
+	private String title;
 
-	public Long getId() {
-		return id;
+	@Column
+	private String description;
+
+	@Column(name = "created_at", nullable = false, updatable = false)
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date createdAt;
+
+	@Column(name = "updated_at", nullable = false)
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date updatedAt;
+
+	@PrePersist
+	protected void onCreate() {
+		this.createdAt = new Date();
+		this.updatedAt = new Date();
 	}
 
-	public void setId(Long id) {
-		this.id = id;
+	@PreUpdate
+	protected void onUpdate() {
+		this.updatedAt = new Date();
 	}
 
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
+	@ManyToMany(mappedBy = "subscribedTopics")
+	@JsonIgnore
+	private Set<User> subscribers = new HashSet<>();
 	
 }

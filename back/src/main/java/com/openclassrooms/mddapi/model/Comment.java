@@ -1,29 +1,49 @@
 package com.openclassrooms.mddapi.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import jakarta.persistence.*;
+import lombok.Data;
+
+import java.time.LocalDateTime;
+import java.util.Date;
 
 @Entity
 @Table(name = "comments")
+@Data
 public class Comment {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "comment_id")
+	@Column(name = "id")
 	private Long id;
-	
-	// TODO : to finish...
 
-	public Long getId() {
-		return id;
+	@ManyToOne
+	@JoinColumn(name = "article_id", nullable = false)
+	private Article article;
+
+	@ManyToOne
+	@JoinColumn(name = "author_id", nullable = false)
+	private User author;
+
+	@Column(nullable = false, columnDefinition = "TEXT")
+	private String content;
+
+	@Column(name = "created_at", nullable = false, updatable = false)
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date createdAt;
+
+	@Column(name = "updated_at", nullable = false)
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date updatedAt;
+
+	@PrePersist
+	protected void onCreate() {
+		this.createdAt = new Date();
+		this.updatedAt = new Date();
 	}
 
-	public void setId(Long id) {
-		this.id = id;
-	}	
-	
+	@PreUpdate
+	protected void onUpdate() {
+		this.updatedAt = new Date();
+	}
+
 }

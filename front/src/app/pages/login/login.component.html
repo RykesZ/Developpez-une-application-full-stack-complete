@@ -9,8 +9,8 @@
       <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
         <mat-form-field appearance="outline">
           <mat-label>E-mail ou nom d'utilisateur</mat-label>
-          <input matInput formControlName="username" required>
-          <mat-error *ngIf="loginForm.get('username')?.hasError('required')">
+          <input matInput formControlName="identifier" required>
+          <mat-error *ngIf="loginForm.get('identifier')?.hasError('required')">
             Ce champ est requis
           </mat-error>
         </mat-form-field>
@@ -24,6 +24,7 @@
         <button mat-raised-button color="primary" type="submit" [disabled]="!loginForm.valid">
           Se connecter
         </button>
+        <span *ngIf="onError" class="error">An error occurred</span>
       </form>
     </div>
   </div>

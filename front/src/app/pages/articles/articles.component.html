@@ -1,22 +1,23 @@
 <div class="articles-container">
-    <div class="actions">
-      <button mat-raised-button color="primary" routerLink="/create-article">Créer un article</button>
-      <button mat-button [matMenuTriggerFor]="sortMenu">
-        Trier par
-        <mat-icon>arrow_drop_down</mat-icon>
-      </button>
-      <mat-menu #sortMenu="matMenu">
-        <button mat-menu-item>Date</button>
-        <button mat-menu-item>Titre</button>
-        <button mat-menu-item>Auteur</button>
-      </mat-menu>
-    </div>
-    
-    <div class="articles-grid" *ngIf="articles$ | async as articles">
-        <app-article *ngFor="let article of articles; let i = index" 
-                     [article]="article" 
-                     class="article-item" 
-                     [class.left-column]="i % 2 === 0"
-                     [class.right-column]="i % 2 !== 0">
-        </app-article>
-      </div>
+  <div class="actions">
+    <button mat-raised-button color="primary" routerLink="/create-article">Créer un article</button>
+    <button mat-button [matMenuTriggerFor]="sortMenu">
+      Trier par
+      <mat-icon>arrow_drop_down</mat-icon>
+    </button>
+    <mat-menu #sortMenu="matMenu">
+      <button mat-menu-item (click)="sortArticles('date')">Date</button>
+      <button mat-menu-item (click)="sortArticles('title')">Titre</button>
+      <button mat-menu-item (click)="sortArticles('author')">Auteur</button>
+    </mat-menu>
+  </div>
+  
+  <div class="articles-grid" *ngIf="articles$ | async as articles">
+    <app-article *ngFor="let article of articles; let i = index"
+                 [article]="article"
+                 class="article-item"
+                 [class.left-column]="i % 2 === 0"
+                 [class.right-column]="i % 2 !== 0">
+    </app-article>
+  </div>
+</div>
