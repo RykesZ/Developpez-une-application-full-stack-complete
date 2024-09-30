@@ -33,6 +33,7 @@ import { MatOption } from '@angular/material/core';
 import { HttpClientModule, HTTP_INTERCEPTORS, provideHttpClient, withInterceptors } from '@angular/common/http';
 import { baseUrlInterceptor } from './core/interceptors/base-url.interceptor';
 import { jwtInterceptor } from './core/interceptors/jwt.interceptor';
+import { CommentComponent } from "./components/comment/comment.component";
 
 @NgModule({
   declarations: [
@@ -67,7 +68,8 @@ import { jwtInterceptor } from './core/interceptors/jwt.interceptor';
     FormsModule,
     MatOption,
     MatSelectModule,
-  ],
+    CommentComponent
+],
   providers: [
     provideClientHydration(),
     { provide: LOCALE_ID, useValue: 'fr-FR' },

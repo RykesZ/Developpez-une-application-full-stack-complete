@@ -1,8 +1,9 @@
 package com.openclassrooms.mddapi.service;
 
 import org.springframework.stereotype.Service;
-import java.time.LocalDateTime;
+
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import com.openclassrooms.mddapi.repository.ArticleRepository;
@@ -36,6 +37,13 @@ public class ArticleService implements IArticleService {
 		return articles.stream()
 				.map(this::convertToDto)
 				.collect(Collectors.toList());
+	}
+
+	@Override
+	@Transactional
+	public Optional<ArticleDTO> getArticle(Long articleId) {
+		Optional<Article> article = articleRepository.findById(articleId);
+		return article.map(this::convertToDto);
 	}
 
 	@Override

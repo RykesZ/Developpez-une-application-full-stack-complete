@@ -1,0 +1,18 @@
+.comment-container {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 10px;
+  }
+  
+  .username {
+    font-weight: bold;
+    margin-right: 10px;
+    min-width: 100px;
+  }
+  
+  .content {
+    background-color: #f0f0f0;
+    border-radius: 10px;
+    padding: 10px;
+    flex-grow: 1;
+  }

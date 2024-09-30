@@ -9,10 +9,16 @@ import { SubscriptionService } from 'app/core/services/subscription.service';
   templateUrl: './topics.component.html',
   styleUrls: ['./topics.component.scss']
 })
-export class TopicsComponent {
+export class TopicsComponent implements OnInit{
   topics$: Observable<Topic[]>;
 
-  constructor(private topicService: TopicService, private subscriptionService: SubscriptionService) { 
+  constructor(private topicService: TopicService, private subscriptionService: SubscriptionService) {}
+
+  ngOnInit(): void {
+    this.getTopics();
+  }
+
+  getTopics() {
     this.topics$ = this.topicService.getTopics().pipe(
       catchError(error => {
         console.error('Erreur lors du chargement des thèmes', error);
@@ -23,7 +29,7 @@ export class TopicsComponent {
 
   onSubscribe(topicId: number): void {
     this.subscriptionService.subscribeToTopic(topicId).subscribe({
-      next: () => console.log(`Abonnement réussi au thème ${topicId}`),
+      next: () => this.getTopics(),
       error: (error) => console.error('Erreur lors de l\'abonnement au thème', error)
     });
   }

@@ -2,6 +2,8 @@ package com.openclassrooms.mddapi.service;
 
 import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import com.openclassrooms.mddapi.repository.CommentRepository;
 import com.openclassrooms.mddapi.repository.UserRepository;
@@ -40,11 +42,19 @@ public class CommentService implements ICommentService {
         return convertToDto(savedComment);
     }
 
+    @Override
+    public List<CommentDTO> getCommentsByArticleId(Long articleId) {
+        List<Comment> comments = commentRepository.findByArticleIdOrderByCreatedAtAsc(articleId);
+        return comments.stream()
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
+    }
+
     private CommentDTO convertToDto(Comment comment) {
         CommentDTO dto = new CommentDTO();
         dto.setId(comment.getId());
         dto.setArticleId(comment.getArticle().getId());
-        dto.setAuthorUsername(comment.getAuthor().getUsername());
+        dto.setUsername(comment.getAuthor().getUsername());
         dto.setContent(comment.getContent());
         dto.setCreatedAt(comment.getCreatedAt());
         dto.setUpdatedAt(comment.getUpdatedAt());

@@ -9,20 +9,17 @@ import { Article } from '../interfaces/article.interface';
 @Injectable({
   providedIn: 'root'
 })
-export class ArticleService {
-  private apiUrl = 'api/articles';
+export class CommentService {
+  private apiUrl = 'api/comments';
 
   constructor(private http: HttpClient) {}
 
-  getArticles(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}`);
+  getCommentsByArticleId(articleId: number): Observable<Comment[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/${articleId}`);
   }
 
-  getArticleById(id: number): Observable<any> {
-    return this.http.get<any[]>(`${this.apiUrl}/${id}`);
+  addComment(comment: sendCommentRequest): Observable<Comment> {
+    return this.http.post<Comment>(`${this.apiUrl}`, comment);
   }
 
-  createArticle(article: sendArticleRequest): Observable<Article> {
-    return this.http.post<Article>(`${this.apiUrl}/articles`, article);
-  }
 }

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import com.openclassrooms.mddapi.service.ICommentService;
 import com.openclassrooms.mddapi.dto.CommentDTO;
 import com.openclassrooms.mddapi.dto.CreateCommentDTO;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/comments")
@@ -21,6 +22,12 @@ public class CommentController {
     @Autowired
     public CommentController(ICommentService commentService) {
         this.commentService = commentService;
+    }
+
+    @GetMapping("/{articleId}")
+    public ResponseEntity<List<CommentDTO>> getCommentsByArticleId(@PathVariable Long articleId) {
+        List<CommentDTO> comments = commentService.getCommentsByArticleId(articleId);
+        return ResponseEntity.ok(comments);
     }
 
     @PostMapping

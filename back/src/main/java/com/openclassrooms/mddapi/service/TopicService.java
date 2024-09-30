@@ -1,6 +1,8 @@
 package com.openclassrooms.mddapi.service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.openclassrooms.mddapi.dto.TopicDTO;
@@ -37,6 +39,31 @@ public class TopicService implements ITopicService {
 		User user = userRepository.findUserById(userId)
 				.orElseThrow(() -> new RuntimeException("User not found"));
 		return user.getSubscribedTopics().stream()
+				.map(this::convertToDTO)
+				.collect(Collectors.toList());
+	}
+
+	@Transactional(readOnly = true)
+	public List<TopicDTO> getUnsubscribedTopics(Long userId) {
+		User user = userRepository.findUserById(userId)
+				.orElseThrow(() -> new RuntimeException("User not found"));
+
+		// Obtenir tous les topics
+		List<Topic> allTopics = topicRepository.findAll();
+
+		// Récupérer la liste des topics auxquels l'utilisateur est abonné
+		Set<Topic> subscribedTopicsSet = user.getSubscribedTopics();
+
+		// Convertir le Set en List
+		List<Topic> subscribedTopicsList = new ArrayList<>(subscribedTopicsSet);
+
+		// Récupérer les topics auxquels l'utilisateur n'est pas encore abonné
+		List<Topic> unsubscribedTopics = allTopics.stream()
+				.filter(topic -> !subscribedTopicsList.contains(topic))
+				.collect(Collectors.toList());
+
+		// Convertir en DTO et retourner
+		return unsubscribedTopics.stream()
 				.map(this::convertToDTO)
 				.collect(Collectors.toList());
 	}

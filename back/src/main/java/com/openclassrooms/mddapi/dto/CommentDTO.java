@@ -8,7 +8,7 @@ import java.util.Date;
 public class CommentDTO {
     private Long id;
     private Long articleId;
-    private String authorUsername;
+    private String username;
     private String content;
     private Date createdAt;
     private Date updatedAt;

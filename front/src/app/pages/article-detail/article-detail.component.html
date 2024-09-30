@@ -17,8 +17,7 @@
     <div class="comments-section" *ngIf="comments$ | async as comments">
       <h2>Commentaires</h2>
       <div *ngFor="let comment of comments" class="comment">
-        <strong>{{ comment.username }}</strong>
-        <p>{{ comment.content }}</p>
+        <app-comment [username]="comment.username" [content]="comment.content"></app-comment>
       </div>
       
       <div class="comment-form">

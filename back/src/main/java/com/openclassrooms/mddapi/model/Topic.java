@@ -12,7 +12,7 @@ import java.util.Set;
 @Table(name = "topics")
 @Getter
 @Setter
-@EqualsAndHashCode(exclude = "subscribers")
+@EqualsAndHashCode(exclude = "subscribers", of = "id")
 @ToString(exclude = "subscribers")
 public class Topic {
 

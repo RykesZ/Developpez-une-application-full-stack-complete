@@ -4,9 +4,7 @@ import com.openclassrooms.mddapi.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import com.openclassrooms.mddapi.service.IArticleService;
@@ -14,6 +12,7 @@ import com.openclassrooms.mddapi.dto.ArticleDTO;
 import com.openclassrooms.mddapi.dto.CreateArticleDTO;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/articles")
@@ -30,6 +29,13 @@ public class ArticleController {
         User currentUser = getCurrentUser();
         List<ArticleDTO> articles = articleService.getArticlesForUser(currentUser.getId());
         return ResponseEntity.ok(articles);
+    }
+
+    @GetMapping("/{articleId}")
+    public ResponseEntity<Optional<ArticleDTO>> getArticle(@PathVariable Long articleId) {
+        User currentUser = getCurrentUser();
+        Optional<ArticleDTO> article = articleService.getArticle(articleId);
+        return ResponseEntity.ok(article);
     }
 
     @PostMapping

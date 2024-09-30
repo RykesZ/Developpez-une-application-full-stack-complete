@@ -4,6 +4,7 @@ import { ArticleService } from '../../core/services/article.service';
 import { Article } from 'app/core/interfaces/article.interface';
 import { Comment } from 'app/core/interfaces/comment.interface';
 import { BehaviorSubject, catchError, Observable, of, switchMap, tap } from 'rxjs';
+import { CommentService } from 'app/core/services/comment.service';
 
 @Component({
   selector: 'app-article-detail',
@@ -18,7 +19,8 @@ export class ArticleDetailComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private articleService: ArticleService
+    private articleService: ArticleService,
+    private commentService: CommentService
   ) {}
 
   ngOnInit() {
@@ -34,10 +36,14 @@ export class ArticleDetailComponent implements OnInit {
       })
     );
 
+    this.getComments();
+  }
+
+  getComments() {
     this.comments$ = this.route.params.pipe(
       switchMap(params => {
         const id = +params['id'];
-        return this.articleService.getCommentsByArticleId(id).pipe(
+        return this.commentService.getCommentsByArticleId(id).pipe(
           tap(comments => this.commentsSubject.next(comments)),
           catchError(error => {
             console.error('Erreur lors du chargement des commentaires', error);
@@ -58,14 +64,14 @@ export class ArticleDetailComponent implements OnInit {
           const comment = {
             articleId: article.id,
             content: this.newComment,
-            userId: 0 // à remplacer avec l'id de l'utilisateur actuel
           };
-          return this.articleService.addComment(comment);
+          return this.commentService.addComment(comment);
         }),
         tap(newComment => {
           const currentComments = this.commentsSubject.value;
           this.commentsSubject.next([...currentComments, newComment]);
           this.newComment = '';
+          this.getComments();
         }),
         catchError(error => {
           console.error('Erreur lors de l\'ajout du commentaire', error);

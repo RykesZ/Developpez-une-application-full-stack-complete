@@ -31,6 +31,13 @@ public class TopicController {
 		return ResponseEntity.ok(topics);
 	}
 
+	@GetMapping("/not-subscribed")
+	public ResponseEntity<List<TopicDTO>> getUnsubscribedTopics() {
+		User currentUser = getCurrentUser();
+		List<TopicDTO> unsubscribedTopics = topicService.getUnsubscribedTopics(currentUser.getId());
+		return ResponseEntity.ok(unsubscribedTopics);
+	}
+
 	@GetMapping("/subscribed")
 	public ResponseEntity<List<TopicDTO>> getSubscribedTopics() {
 		User currentUser = getCurrentUser();
