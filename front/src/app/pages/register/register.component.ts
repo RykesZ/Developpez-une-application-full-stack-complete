@@ -42,11 +42,15 @@ export class RegisterComponent implements OnInit {
     if (this.registerForm.valid) {
       this.registerForm.disable();
       const registerRequest = this.registerForm.value as RegisterRequest;
+      let token = '';
       this.authService.register(registerRequest).pipe(
-        tap((response: AuthSuccess) => localStorage.setItem('token', response.token)),
+        tap((response: AuthSuccess) => {
+          token = response.token;
+          localStorage.setItem('token', token)
+        }),
         switchMap(() => this.authService.me()),
         tap((user: User) => {
-          this.sessionService.logIn(user);
+          this.sessionService.logIn(user, token);
           this.router.navigate(['/articles']);
         }),
         catchError((error) => {

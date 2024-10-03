@@ -5,8 +5,9 @@
     <h1>{{ article.title }}</h1>
     
     <div class="article-meta">
-      <span>{{ article.date | date }}</span>
-      <span>{{ article.author }}</span>
+      <span>Créé le : {{ article.createdAt | date }}</span>
+      <span *ngIf="article.createdAt !== article.updatedAt">Modifié le : {{ article.updatedAt | date }}</span>
+      <span>Auteur : {{ article.author }}</span>
       <span>{{ article.topic }}</span>
     </div>
     

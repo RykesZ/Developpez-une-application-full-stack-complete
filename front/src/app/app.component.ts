@@ -4,6 +4,7 @@ import { catchError, filter, finalize, Observable, of, Subject, Subscription, ta
 import { AuthService } from './core/services/auth.service';
 import { SessionService } from './core/services/session.service';
 import { User } from './core/interfaces/user.interface';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 
 @Component({
   selector: 'app-root',
@@ -12,8 +13,10 @@ import { User } from './core/interfaces/user.interface';
 })
 export class AppComponent implements OnInit, OnDestroy {
   title = 'mdd-client';
-
+  
   public onHomePage = true;
+  public onLoginOrRegister = false;
+  public isHandset: boolean = false;
   public isLoading = false;
   private routerSubscription: Subscription = new Subscription();
   private destroy$ = new Subject<void>();
@@ -22,12 +25,15 @@ export class AppComponent implements OnInit, OnDestroy {
   constructor(
     private router: Router,
     private authService: AuthService,
-    private sessionService: SessionService
+    private sessionService: SessionService,
+    private breakpointObserver: BreakpointObserver
   ) {}
 
-
-
   ngOnInit(): void {
+    this.breakpointObserver.observe(['(max-width: 900px)']).subscribe(result => {
+      this.isHandset = result.matches;
+    });
+
     /*this.router.events.pipe(
       filter(event => event instanceof NavigationEnd),
       takeUntil(this.destroy$) // Désabonnement lorsque le composant est détruit
@@ -51,16 +57,12 @@ export class AppComponent implements OnInit, OnDestroy {
     ).subscribe((event: NavigationEnd) => {
       // Met à jour la valeur de `onHomePage` en fonction de l'URL actuelle
       this.onHomePage = event.url === '/' || event.url === '';
+      this.onLoginOrRegister = event.url === '/login' || event.url === '/register';
     });
   }
   
   public $isLogged(): Observable<boolean> {
     return this.sessionService.$isLogged();
-  }
-
-  public logout(): void {
-    this.sessionService.logOut();
-    this.router.navigate([''])
   }
 
   ngOnDestroy(): void {
@@ -74,10 +76,11 @@ export class AppComponent implements OnInit, OnDestroy {
 
   public autoLog(): void {
     const currentUrl = this.router.url;
-    if (localStorage.getItem('token') && (currentUrl === '/' || currentUrl.includes('login') || currentUrl.includes('register'))) {
+    let token = localStorage.getItem('token');
+    if (token && (currentUrl === '/' || currentUrl.includes('login') || currentUrl.includes('register'))) {
       this.isLoading = true;
       this.authService.me().pipe(
-        tap((user: User) => this.sessionService.logIn(user)),
+        tap((user: User) => this.sessionService.logIn(user, token)),
         catchError((error) => {
           console.error('Auto-login failed:', error);
           this.sessionService.logOut();

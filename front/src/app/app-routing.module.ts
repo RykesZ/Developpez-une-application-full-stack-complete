@@ -9,19 +9,23 @@ import { LoginComponent } from './pages/login/login.component';
 import { ProfileComponent } from './pages/profile/profile.component';
 import { RegisterComponent } from './pages/register/register.component';
 import { TopicsComponent } from './pages/topics/topics.component';
+import { AuthGuard } from './core/guards/auth.guard';
 
 const routes: Routes = [
   {
     path: 'article-detail/:id',
     component: ArticleDetailComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'articles',
     component: ArticlesComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'create-article',
     component: CreateArticleComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: '',
@@ -34,6 +38,7 @@ const routes: Routes = [
   {
     path: 'profile',
     component: ProfileComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'register',
@@ -42,6 +47,7 @@ const routes: Routes = [
   {
     path: 'topics',
     component: TopicsComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: '**', // wildcard

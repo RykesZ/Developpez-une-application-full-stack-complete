@@ -14,7 +14,8 @@
   
   .article-meta {
     display: flex;
-    gap: 20px;
+    justify-content: flex-start;
+    gap: 50px;
     margin-bottom: 20px;
     color: #666;
   }

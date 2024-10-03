@@ -27,7 +27,7 @@ export class CreateArticleComponent implements OnInit {
       topicId: ['', Validators.required]
     });
 
-    this.topics$ = this.topicService.getTopics().pipe(
+    this.topics$ = this.topicService.getAllTopics().pipe(
       catchError(error => {
         console.error('Erreur lors du chargement des thèmes', error);
         return of([]);

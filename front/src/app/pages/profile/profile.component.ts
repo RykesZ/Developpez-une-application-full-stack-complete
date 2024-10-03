@@ -7,6 +7,7 @@ import { catchError, Observable, of } from 'rxjs';
 import { User } from '../../core/interfaces/user.interface';
 import { Topic } from 'app/core/interfaces/topic.interface';
 import { AuthService } from 'app/core/services/auth.service';
+import { SessionService } from 'app/core/services/session.service';
 
 
 @Component({
@@ -23,6 +24,7 @@ export class ProfileComponent implements OnInit {
     private userService: UserService,
     private authService: AuthService,
     private subscriptionService: SubscriptionService,
+    private sessionService: SessionService,
     private router: Router
   ) {
     this.profileForm = this.fb.group({
@@ -56,7 +58,7 @@ export class ProfileComponent implements OnInit {
   }
 
   onLogout(): void {
-    this.userService.logout();
+    this.sessionService.logOut();
     this.router.navigate(['/login']);
   }
 

@@ -19,7 +19,7 @@ export class TopicsComponent implements OnInit{
   }
 
   getTopics() {
-    this.topics$ = this.topicService.getTopics().pipe(
+    this.topics$ = this.topicService.getNotSubscribedTopics().pipe(
       catchError(error => {
         console.error('Erreur lors du chargement des thèmes', error);
         return of([]);

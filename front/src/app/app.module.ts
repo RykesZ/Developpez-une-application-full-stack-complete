@@ -10,6 +10,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSelectModule } from '@angular/material/select';
+import {MatSidenavModule} from '@angular/material/sidenav';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -34,6 +35,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS, provideHttpClient, withInterceptor
 import { baseUrlInterceptor } from './core/interceptors/base-url.interceptor';
 import { jwtInterceptor } from './core/interceptors/jwt.interceptor';
 import { CommentComponent } from "./components/comment/comment.component";
+import {MatListModule} from '@angular/material/list';
 
 @NgModule({
   declarations: [
@@ -68,7 +70,9 @@ import { CommentComponent } from "./components/comment/comment.component";
     FormsModule,
     MatOption,
     MatSelectModule,
-    CommentComponent
+    CommentComponent,
+    MatSidenavModule,
+    MatListModule
 ],
   providers: [
     provideClientHydration(),

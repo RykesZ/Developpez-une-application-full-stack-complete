@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
+import { Article } from 'app/core/interfaces/article.interface';
 
 @Component({
   selector: 'app-article',
@@ -7,7 +8,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./article.component.scss']
 })
 export class ArticleComponent {
-  @Input() article: any;
+  @Input() article: Article;
 
   constructor(private router: Router) {}
 

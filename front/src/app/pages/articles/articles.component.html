@@ -6,18 +6,20 @@
       <mat-icon>arrow_drop_down</mat-icon>
     </button>
     <mat-menu #sortMenu="matMenu">
-      <button mat-menu-item (click)="sortArticles('date')">Date</button>
+      <button mat-menu-item (click)="sortArticles('createdAt')">Date</button>
       <button mat-menu-item (click)="sortArticles('title')">Titre</button>
       <button mat-menu-item (click)="sortArticles('author')">Auteur</button>
     </mat-menu>
   </div>
   
-  <div class="articles-grid" *ngIf="articles$ | async as articles">
+  <div class="articles-grid" *ngIf="articles$ | async as articles" [ngClass]="{'single-column': isHandset}">
     <app-article *ngFor="let article of articles; let i = index"
                  [article]="article"
                  class="article-item"
-                 [class.left-column]="i % 2 === 0"
-                 [class.right-column]="i % 2 !== 0">
+                 [ngClass]="{
+                   'left-column': !isHandset && i % 2 === 0,
+                   'right-column': !isHandset && i % 2 !== 0
+                 }">
     </app-article>
   </div>
 </div>

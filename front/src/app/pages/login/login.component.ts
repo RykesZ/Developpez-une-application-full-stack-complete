@@ -29,24 +29,6 @@ export class LoginComponent {
     });
   }
 
-  // onSubmit() {
-  //   if (this.loginForm.valid) {
-  //     const loginRequest = this.loginForm.value as LoginRequest;
-  //     this.authService.login(loginRequest).pipe(
-  //       tap((response: AuthSuccess) => localStorage.setItem('token', response.token)),
-  //       switchMap(() => this.authService.me()),
-  //       tap((user: User) => {
-  //         this.sessionService.logIn(user);
-  //         this.router.navigate(['/articles']);
-  //       }),
-  //       catchError((error) => {
-  //         this.onError = true;
-  //         return throwError(() => new Error('Login failed'));
-  //       })
-  //     ).subscribe();
-  //   }
-  // }
-
   async onSubmit(): Promise<void> {
     if (this.loginForm.valid) {
       try {
@@ -60,7 +42,8 @@ export class LoginComponent {
         const user: User = await firstValueFrom(this.authService.me());
   
         // Mise à jour de la session et navigation
-        this.sessionService.logIn(user);
+        this.sessionService.logIn(user, response.token);
+        this.sessionService['checkInitialLoginState']();
         await this.router.navigate(['/articles']);
   
       } catch (error) {

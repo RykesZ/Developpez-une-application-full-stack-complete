@@ -1,28 +1,80 @@
 .articles-container {
-    padding: 20px;
+  padding: 20px;
+}
+
+.actions {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  button {
+    margin-bottom: 15px;
+    font-size: 1.2rem;
+    /* Augmente la taille du texte */
+    padding: 20px 20px;
+    /* Augmente le padding pour un bouton plus grand */
   }
-  
+}
+
+.articles-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 50px 30px;
+
+  &.single-column {
+    grid-template-columns: 1fr;
+    gap: 50px 0;
+  }
+}
+
+.article-item {
+  width: 100%;
+}
+
+/* Ces classes ne sont plus nécessaires avec Grid, mais on peut les garder pour un positionnement spécifique si besoin */
+.left-column {
+  justify-self: start;
+}
+
+.right-column {
+  justify-self: end;
+}
+
+@media (max-width: 900px) {
   .actions {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 20px;
+    flex-direction: column;
+    align-items: center;
+
+    /* Style spécifique pour le bouton "Créer un article" */
+    button[routerLink="/create-article"] {
+      width: auto;
+      /* Empêche le bouton de prendre toute la largeur */
+      min-width: 200px;
+      /* Donne une largeur minimale au bouton */
+    }
+
+    /* Style pour le bouton du menu déroulant */
+    button[matMenuTriggerFor] {
+      width: auto;
+      min-width: 150px;
+
+      .mat-icon {
+        font-size: 1.2rem;
+        /* Augmente la taille de l'icône */
+        vertical-align: middle;
+      }
+    }
   }
-  
-  .articles-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 50px 30px; /* 50px entre les lignes, 30px entre les colonnes */
+}
+
+/* Styles pour le menu déroulant en vue mobile */
+::ng-deep .mat-menu-panel {
+  @media (max-width: 900px) {
+    .mat-menu-item {
+      font-size: 1.2rem;
+      /* Augmente la taille du texte dans le menu déroulant */
+      height: 48px;
+      /* Augmente la hauteur des éléments du menu */
+      line-height: 48px;
+    }
   }
-  
-  .article-item {
-    width: 100%;
-  }
-  
-  /* Ces classes ne sont plus nécessaires avec Grid, mais on peut les garder pour un positionnement spécifique si besoin */
-  .left-column {
-    justify-self: start;
-  }
-  
-  .right-column {
-    justify-self: end;
-  }
+}

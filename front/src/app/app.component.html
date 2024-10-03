@@ -1,2 +1,2 @@
-<app-header *ngIf="!onHomePage"></app-header>
+<app-header *ngIf="!onHomePage && !(onLoginOrRegister && isHandset)"></app-header>
 <router-outlet></router-outlet>

@@ -67,8 +67,8 @@ public class ArticleService implements IArticleService {
 	private ArticleDTO convertToDto(Article article) {
 		ArticleDTO dto = new ArticleDTO();
 		dto.setId(article.getId());
-		dto.setAuthorUsername(article.getAuthor().getUsername());  // Utilise le username au lieu de l'ID
-		dto.setTopicTitle(article.getTopic().getTitle());  // Utilise le titre du topic au lieu de l'ID
+		dto.setAuthor(article.getAuthor().getUsername());  // Utilise le username au lieu de l'ID
+		dto.setTopic(article.getTopic().getTitle());  // Utilise le titre du topic au lieu de l'ID
 		dto.setTitle(article.getTitle());
 		dto.setContent(article.getContent());
 		dto.setCreatedAt(article.getCreatedAt());
