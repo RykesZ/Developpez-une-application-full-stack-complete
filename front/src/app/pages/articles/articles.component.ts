@@ -11,9 +11,9 @@ import { BehaviorSubject, catchError, Observable, of, switchMap } from 'rxjs';
 })
 export class ArticlesComponent implements OnInit {
   private articlesSubject = new BehaviorSubject<Article[]>([]);
-  articles$: Observable<Article[]>;
   currentSortKey: 'createdAt' | 'title' | 'author' = 'createdAt';
   isHandset: boolean = false;
+  articles$: Observable<Article[]>;
 
   constructor(
     private articleService: ArticleService,

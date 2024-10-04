@@ -3,8 +3,27 @@
     margin: 0 auto;
     padding: 20px;
   
-    h1 {
+    .head-line {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
       margin-bottom: 20px;
+      .back-link {
+        position: absolute;
+        left: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        display: inline-flex;
+        align-items: center;
+        text-decoration: none;
+        color: inherit;
+      }
+      .centered-title {
+        text-align: center;
+        margin: 0;
+        padding: 0 40px;
+      }
     }
   
     form {
@@ -16,8 +35,22 @@
         width: 100%;
       }
   
-      button[type="submit"] {
+      .submit-button {
+        align-self: center;
+        min-width: 200px; // Ajustez cette valeur selon vos besoins
+        max-width: 100%;
+      }
+    }
+  }
+  
+@media (max-width: 899px) {
+  .create-article-container {
+    .head-line {
+      flex-direction: column;
+      .back-link {
+        position: relative;
         align-self: flex-start;
       }
     }
   }
+}

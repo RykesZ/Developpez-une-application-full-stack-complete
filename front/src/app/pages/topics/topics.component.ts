@@ -3,6 +3,7 @@ import { TopicService } from '../../core/services/topic.service';
 import { Topic } from 'app/core/interfaces/topic.interface';
 import { Observable, catchError, of } from 'rxjs';
 import { SubscriptionService } from 'app/core/services/subscription.service';
+import { BreakpointObserver } from '@angular/cdk/layout';
 
 @Component({
   selector: 'app-topics',
@@ -10,12 +11,20 @@ import { SubscriptionService } from 'app/core/services/subscription.service';
   styleUrls: ['./topics.component.scss']
 })
 export class TopicsComponent implements OnInit{
+  isHandset: boolean = false;
   topics$: Observable<Topic[]>;
 
-  constructor(private topicService: TopicService, private subscriptionService: SubscriptionService) {}
+  constructor(
+    private topicService: TopicService, 
+    private subscriptionService: SubscriptionService,
+    private breakpointObserver: BreakpointObserver
+  ) {}
 
   ngOnInit(): void {
     this.getTopics();
+    this.breakpointObserver.observe(['(max-width: 900px)']).subscribe(result => {
+      this.isHandset = result.matches;
+    });
   }
 
   getTopics() {

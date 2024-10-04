@@ -34,23 +34,6 @@ export class AppComponent implements OnInit, OnDestroy {
       this.isHandset = result.matches;
     });
 
-    /*this.router.events.pipe(
-      filter(event => event instanceof NavigationEnd),
-      takeUntil(this.destroy$) // Désabonnement lorsque le composant est détruit
-    ).subscribe(() => {
-      this.autoLog(); // Appel de `autoLog` une fois la navigation terminée
-    });*/
-
-    // Surveille l'état de connexion de l'utilisateur et redirige vers /articles s'il est connecté
-    this.$isLogged().pipe(
-      takeUntil(this.destroy$), // Désabonnement automatique lors de la destruction du composant
-      tap((isLoggedIn) => {
-        if (isLoggedIn) {
-          this.router.navigate(['/articles']); // Redirige l'utilisateur connecté vers /articles
-        }
-      })
-    ).subscribe();
-
     // Surveille les événements de navigation et met à jour `onHomePage` lorsque l'URL change
     this.routerSubscription = this.router.events.pipe(
       filter(event => event instanceof NavigationEnd) // Filtre uniquement les événements de type NavigationEnd

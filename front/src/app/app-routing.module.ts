@@ -10,6 +10,7 @@ import { ProfileComponent } from './pages/profile/profile.component';
 import { RegisterComponent } from './pages/register/register.component';
 import { TopicsComponent } from './pages/topics/topics.component';
 import { AuthGuard } from './core/guards/auth.guard';
+import { AlreadyLogged } from './core/guards/alreadyLogged.guard';
 
 const routes: Routes = [
   {
@@ -30,10 +31,12 @@ const routes: Routes = [
   {
     path: '',
     component: HomeComponent,
+    canActivate: [AlreadyLogged]
   },
   {
     path: 'login',
     component: LoginComponent,
+    canActivate: [AlreadyLogged]
   },
   {
     path: 'profile',
@@ -43,6 +46,7 @@ const routes: Routes = [
   {
     path: 'register',
     component: RegisterComponent,
+    canActivate: [AlreadyLogged]
   },
   {
     path: 'topics',

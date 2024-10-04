@@ -23,4 +23,12 @@
   mat-card-actions {
     display: flex;
     justify-content: center;
+    button {
+      margin-bottom: 15px;
+      font-size: 1.2rem;
+      /* Augmente la taille du texte */
+      padding: 20px 50px;
+      /* Augmente le padding pour un bouton plus grand */
+      border-radius: 10px;
+    }
   }

@@ -1,5 +1,10 @@
 <div class="create-article-container">
-    <h1>Créer un nouvel article</h1>
+  <div class="head-line">
+    <a routerLink="/articles" class="back-link">
+      <mat-icon>arrow_back</mat-icon>
+    </a>
+    <h1 class="centered-title">Créer un nouvel article</h1>
+  </div>
     <form [formGroup]="articleForm" (ngSubmit)="onSubmit()">
 
         <mat-form-field appearance="outline">
@@ -23,7 +28,7 @@
             <textarea matInput formControlName="content" rows="10" required></textarea>
         </mat-form-field>
 
-        <button mat-raised-button color="primary" type="submit" [disabled]="!articleForm.valid">
+        <button mat-raised-button color="primary" type="submit" [disabled]="!articleForm.valid" class="submit-button">
             Créer l'article
         </button>
     </form>

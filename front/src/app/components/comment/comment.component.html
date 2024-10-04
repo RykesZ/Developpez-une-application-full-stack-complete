@@ -1,4 +1,9 @@
-<div class="comment-container">
+<div class="comment-container" *ngIf="!isHandset">
     <div class="username">{{ username }}</div>
     <div class="content">{{ content }}</div>
-  </div>
+</div>
+
+<div class="comment-container-handset" *ngIf="isHandset">
+  <div class="content-handset">{{ content }}</div>
+  <div class="username-handset">{{ username }}</div>
+</div>

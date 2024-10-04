@@ -52,6 +52,7 @@ import {MatListModule} from '@angular/material/list';
     ProfileComponent,
     HeaderComponent,
     NotFoundComponent,
+    CommentComponent,
   ],
   bootstrap: [AppComponent],
   imports: [
@@ -70,7 +71,6 @@ import {MatListModule} from '@angular/material/list';
     FormsModule,
     MatOption,
     MatSelectModule,
-    CommentComponent,
     MatSidenavModule,
     MatListModule
 ],

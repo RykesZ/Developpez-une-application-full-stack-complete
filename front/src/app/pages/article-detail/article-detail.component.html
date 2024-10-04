@@ -1,8 +1,10 @@
 <div class="article-detail-container" *ngIf="article$ | async as article">
+  <div class="head-line">
     <a routerLink="/articles" class="back-link">
       <mat-icon>arrow_back</mat-icon>
     </a>
-    <h1>{{ article.title }}</h1>
+    <h1 class="centered-title">{{ article.title }}</h1>
+  </div>
     
     <div class="article-meta">
       <span>Créé le : {{ article.createdAt | date }}</span>
@@ -30,4 +32,3 @@
         </button>
       </div>
     </div>
-  </div>

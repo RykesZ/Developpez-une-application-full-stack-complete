@@ -29,7 +29,7 @@ mat-toolbar {
                 text-decoration: none;
                 font-size: 1.5em;
                 cursor: pointer;
-                margin: 0 5px;
+                margin: 0 20px;
                 &.active {
                     color: #6C5CCF;
                 }
@@ -55,7 +55,7 @@ aside {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-
+    align-items: flex-end;
     &.open {
         transform: translateX(0);
     }
@@ -64,12 +64,13 @@ aside {
         display: flex;
         flex-direction: column;
         padding: 20px;
+        margin-top: 80px;
 
         a {
-            margin: 10px 0;
+            margin: 15px 0;
             text-decoration: none;
             color: #333;
-            font-size: 1.2em;
+            font-size: 2em;
 
             &.active {
                 color: #6C5CCF;
@@ -80,6 +81,10 @@ aside {
     .profile-link {
         padding: 20px;
         align-self: flex-end;
+        .ppButton{
+            width: 100px;
+            height: 100px;
+        }
     }
 }
 

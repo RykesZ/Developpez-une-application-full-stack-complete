@@ -3,21 +3,38 @@
     max-width: 800px;
     margin: 0 auto;
   }
-  
-  .back-link {
-    display: inline-flex;
+
+  .head-line {
+    position: relative;
+    display: flex;
+    justify-content: center;
     align-items: center;
-    text-decoration: none;
-    color: inherit;
     margin-bottom: 20px;
+    .back-link {
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      display: inline-flex;
+      align-items: center;
+      text-decoration: none;
+      color: inherit;
+    }
+    .centered-title {
+      text-align: center;
+      margin: 0;
+      padding: 0 40px;
+    }
   }
   
   .article-meta {
     display: flex;
     justify-content: flex-start;
-    gap: 50px;
+    column-gap: 50px;
+    row-gap: 10px;
     margin-bottom: 20px;
     color: #666;
+    flex-wrap: wrap;
   }
   
   .article-content {

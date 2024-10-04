@@ -1,6 +1,5 @@
 <div class="topics-container">
-    <h2>Thèmes populaires</h2>
-    <div class="topics-grid" *ngIf="topics$ | async as topics">
+    <div class="topics-grid" *ngIf="topics$ | async as topics" [ngClass]="{'single-column': isHandset}">
       <app-topic *ngFor="let topic of topics"
                  [id]="topic.id"
                  [title]="topic.title"

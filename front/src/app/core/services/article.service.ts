@@ -23,6 +23,6 @@ export class ArticleService {
   }
 
   createArticle(article: sendArticleRequest): Observable<Article> {
-    return this.http.post<Article>(`${this.apiUrl}/articles`, article);
+    return this.http.post<Article>(`${this.apiUrl}`, article);
   }
 }
