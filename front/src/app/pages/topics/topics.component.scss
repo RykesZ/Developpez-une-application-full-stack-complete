@@ -9,4 +9,25 @@
       grid-template-columns: 1fr;
       gap: 50px 0;
     }
+    .subscription-card {
+      background-color: #f0f0f0;
+      padding: 20px;
+      border-radius: 8px;
+      width: 300px;
+      margin: 10px;
+      text-align: left;
+
+      h4 {
+          margin-bottom: 10px;
+          font-weight: bold;
+      }
+
+      button {
+          display: block;
+          margin: 10px auto 0 auto;
+      }
   }
+}
+.subscribedTopics-grid {
+  margin-top: 50px;
+}

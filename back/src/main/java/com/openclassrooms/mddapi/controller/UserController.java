@@ -1,17 +1,19 @@
 package com.openclassrooms.mddapi.controller;
 
+import com.openclassrooms.mddapi.dto.UpdateUserDTO;
 import com.openclassrooms.mddapi.dto.UserPublic;
 import com.openclassrooms.mddapi.model.User;
 import com.openclassrooms.mddapi.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
@@ -32,6 +34,38 @@ public class UserController {
     } else {
       return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Utilisateur inexistant pour cet id");
     }
+  }
+
+  @Operation(summary = "Get self infos", description = "Allow the current authenticated user to get their own infos")
+  @SecurityRequirement(name = "Bearer Authentication")
+  @CrossOrigin(origins = "http://localhost:4200")
+  @GetMapping("user/me")
+  @Transactional
+  public UserPublic getMe() {
+    User currentUser = getCurrentUser();
+    return new UserPublic(currentUser);
+  }
+
+  @Operation(summary = "Update user infos", description = "Allow the current authenticated user to update their own infos")
+  @SecurityRequirement(name = "Bearer Authentication")
+  @PutMapping("/user/update")
+  public ResponseEntity<Object> updateUser(@RequestBody UpdateUserDTO updatedUser){
+    User currentUser = getCurrentUser();
+    currentUser.setUsername(updatedUser.getUsername());
+    currentUser.setEmail(updatedUser.getEmail());
+
+    String token = userService.updateUser(currentUser);
+    JSONObject responseJson = new JSONObject();
+    responseJson.put("token", token);
+    return ResponseEntity.ok(responseJson.toString());
+  }
+
+  private User getCurrentUser() {
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    if (authentication == null || !(authentication.getPrincipal() instanceof User)) {
+      throw new RuntimeException("User not authenticated or invalid authentication type");
+    }
+    return (User) authentication.getPrincipal();
   }
 
 }

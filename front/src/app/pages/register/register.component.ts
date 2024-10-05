@@ -6,6 +6,8 @@ import { RegisterRequest } from 'app/core/interfaces/registerRequest.interface';
 import { User } from 'app/core/interfaces/user.interface';
 import { AuthService } from 'app/core/services/auth.service';
 import { SessionService } from 'app/core/services/session.service';
+import { passwordValidator } from 'app/core/validators/passwordValidator.validator';
+import { UserService } from 'app/core/services/user.service';
 import { tap, switchMap, catchError, throwError } from 'rxjs';
 
 @Component({
@@ -22,6 +24,7 @@ export class RegisterComponent implements OnInit {
     private router: Router,
     private authService: AuthService,
     private sessionService: SessionService,
+    private userService: UserService,
   ) {
     this.registerForm = this.fb.group({
       username: ['', Validators.required],
@@ -34,7 +37,7 @@ export class RegisterComponent implements OnInit {
     this.registerForm = this.fb.group({
       username: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
-      password: ['', Validators.required]
+      password: ['', [Validators.required, passwordValidator()]]
     });
   }
 
@@ -48,7 +51,7 @@ export class RegisterComponent implements OnInit {
           token = response.token;
           localStorage.setItem('token', token)
         }),
-        switchMap(() => this.authService.me()),
+        switchMap(() => this.userService.me()),
         tap((user: User) => {
           this.sessionService.logIn(user, token);
           this.router.navigate(['/articles']);

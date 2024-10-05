@@ -13,6 +13,7 @@ import { BreakpointObserver } from '@angular/cdk/layout';
 export class TopicsComponent implements OnInit{
   isHandset: boolean = false;
   topics$: Observable<Topic[]>;
+  subscriptions$: Observable<Topic[]>;
 
   constructor(
     private topicService: TopicService, 
@@ -22,6 +23,7 @@ export class TopicsComponent implements OnInit{
 
   ngOnInit(): void {
     this.getTopics();
+    this.getSubscriptions();
     this.breakpointObserver.observe(['(max-width: 900px)']).subscribe(result => {
       this.isHandset = result.matches;
     });
@@ -35,10 +37,22 @@ export class TopicsComponent implements OnInit{
       })
     );
   }
+  
+  getSubscriptions() {
+    this.subscriptions$ = this.subscriptionService.getUserSubscriptions().pipe(
+      catchError(error => {
+        console.error('Erreur lors du chargement des thèmes', error);
+        return of([]);
+      })
+    );
+  }
 
   onSubscribe(topicId: number): void {
     this.subscriptionService.subscribeToTopic(topicId).subscribe({
-      next: () => this.getTopics(),
+      next: () => {
+        this.getTopics();
+        this.getSubscriptions();
+      },
       error: (error) => console.error('Erreur lors de l\'abonnement au thème', error)
     });
   }

@@ -36,12 +36,15 @@ import { baseUrlInterceptor } from './core/interceptors/base-url.interceptor';
 import { jwtInterceptor } from './core/interceptors/jwt.interceptor';
 import { CommentComponent } from "./components/comment/comment.component";
 import {MatListModule} from '@angular/material/list';
+import { SubscribedTopicComponent } from './components/subscribedTopic/subscribedTopic.component';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
     TopicComponent,
+    SubscribedTopicComponent,
     RegisterComponent,
     LoginComponent,
     ArticlesComponent,
@@ -72,7 +75,8 @@ import {MatListModule} from '@angular/material/list';
     MatOption,
     MatSelectModule,
     MatSidenavModule,
-    MatListModule
+    MatListModule,
+    MatSnackBarModule
 ],
   providers: [
     provideClientHydration(),

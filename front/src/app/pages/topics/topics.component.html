@@ -7,4 +7,11 @@
                  (subscribe)="onSubscribe($event)">
       </app-topic>
     </div>
+    <div class="subscribedTopics-grid topics-grid" *ngIf="subscriptions$ | async as subscriptions" [ngClass]="{'single-column': isHandset}">
+      <app-subscribedTopic *ngFor="let subscription of subscriptions"
+                 [id]="subscription.id"
+                 [title]="subscription.title"
+                 [description]="subscription.description">
+      </app-subscribedTopic>
+    </div>
   </div>

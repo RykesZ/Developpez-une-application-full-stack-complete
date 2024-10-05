@@ -6,14 +6,10 @@ import com.openclassrooms.mddapi.model.User;
 import com.openclassrooms.mddapi.service.AuthService;
 import com.openclassrooms.mddapi.service.JWTService;
 import com.openclassrooms.mddapi.service.UserService;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -28,16 +24,6 @@ public class AuthController {
 
   @Autowired
   private JWTService jwtService;
-
-  @Operation(summary = "Get self infos", description = "Allow the current authenticated user to get their own infos")
-  @SecurityRequirement(name = "Bearer Authentication")
-  @CrossOrigin(origins = "http://localhost:4200")
-  @GetMapping("auth/me")
-  @Transactional
-  public UserPublic getMe() {
-    Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-    return new UserPublic((User)principal);
-  }
 
   @PostMapping("auth/register")
   public ResponseEntity<String> createUser(@RequestBody User user) {

@@ -27,7 +27,6 @@
       }
     }
   }
-
   .register-container {
     max-width: 300px;
     margin: 0 auto;
@@ -53,9 +52,13 @@
 
       .submit-button {
         width: 100%;
+        &.input-error {
+          margin-top: 150px;
+        }
       }
     }
   }
+
 }
 
 

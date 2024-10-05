@@ -5,6 +5,7 @@ import { AuthService } from './core/services/auth.service';
 import { SessionService } from './core/services/session.service';
 import { User } from './core/interfaces/user.interface';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { UserService } from './core/services/user.service';
 
 @Component({
   selector: 'app-root',
@@ -24,7 +25,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
   constructor(
     private router: Router,
-    private authService: AuthService,
+    private userService: UserService,
     private sessionService: SessionService,
     private breakpointObserver: BreakpointObserver
   ) {}
@@ -62,7 +63,7 @@ export class AppComponent implements OnInit, OnDestroy {
     let token = localStorage.getItem('token');
     if (token && (currentUrl === '/' || currentUrl.includes('login') || currentUrl.includes('register'))) {
       this.isLoading = true;
-      this.authService.me().pipe(
+      this.userService.me().pipe(
         tap((user: User) => this.sessionService.logIn(user, token)),
         catchError((error) => {
           console.error('Auto-login failed:', error);

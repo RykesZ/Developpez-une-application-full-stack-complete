@@ -6,6 +6,7 @@ import { LoginRequest } from 'app/core/interfaces/loginRequest.interface';
 import { User } from 'app/core/interfaces/user.interface';
 import { AuthService } from 'app/core/services/auth.service';
 import { SessionService } from 'app/core/services/session.service';
+import { UserService } from 'app/core/services/user.service';
 import { tap, switchMap, catchError, throwError, firstValueFrom } from 'rxjs';
 
 @Component({
@@ -22,6 +23,7 @@ export class LoginComponent {
     private router: Router,
     private authService: AuthService,
     private sessionService: SessionService,
+    private userService: UserService,
   ) {
     this.loginForm = this.fb.group({
       identifier: ['', Validators.required],
@@ -39,7 +41,7 @@ export class LoginComponent {
         localStorage.setItem('token', response.token);
   
         // Récupération des informations de l'utilisateur après connexion
-        const user: User = await firstValueFrom(this.authService.me());
+        const user: User = await firstValueFrom(this.userService.me());
   
         // Mise à jour de la session et navigation
         this.sessionService.logIn(user, response.token);

@@ -2,12 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
-
-interface Subscription {
-  id: number;
-  title: string;
-  description: string;
-}
+import { Topic } from '../interfaces/topic.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -22,8 +17,8 @@ export class SubscriptionService {
   constructor(private http: HttpClient) {}
 
   // Récupère la liste des abonnements de l'utilisateur
-  getUserSubscriptions(): Observable<Subscription[]> {
-    return this.http.get<Subscription[]>(`${this.apiUrl}/subscribed`).pipe(
+  getUserSubscriptions(): Observable<Topic[]> {
+    return this.http.get<Topic[]>(`${this.apiUrl}/subscribed`).pipe(
       catchError((error) => {
         console.error('Erreur lors du chargement des abonnements', error);
         return of([]);  // Renvoie un tableau vide en cas d'erreur
