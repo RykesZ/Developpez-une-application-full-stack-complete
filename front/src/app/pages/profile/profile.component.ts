@@ -11,6 +11,7 @@ import { SessionService } from 'app/core/services/session.service';
 import { UpdateUserRequest } from 'app/core/interfaces/updateUserRequest.interface';
 import { AuthSuccess } from 'app/core/interfaces/authSuccess.interface';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { passwordValidator } from 'app/core/validators/passwordValidator.validator';
 
 @Component({
   selector: 'app-profile',
@@ -33,7 +34,8 @@ export class ProfileComponent implements OnInit {
   ) {
     this.profileForm = this.fb.group({
       username: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]]
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [passwordValidator(false)]]
     });
     this.subscriptions$ = this.subscriptionService.getUserSubscriptions().pipe(
       catchError(error => {

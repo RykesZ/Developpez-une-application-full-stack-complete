@@ -15,7 +15,7 @@ import { tap, switchMap, catchError, throwError } from 'rxjs';
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss']
 })
-export class RegisterComponent implements OnInit {
+export class RegisterComponent {
   registerForm: FormGroup;
   public onError = false;
 
@@ -26,14 +26,6 @@ export class RegisterComponent implements OnInit {
     private sessionService: SessionService,
     private userService: UserService,
   ) {
-    this.registerForm = this.fb.group({
-      username: ['', Validators.required],
-      email: ['', Validators.required],
-      password: ['', Validators.required]
-    });
-  }
-
-  ngOnInit(): void {
     this.registerForm = this.fb.group({
       username: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],

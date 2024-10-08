@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -50,14 +51,23 @@ public class UserController {
   @SecurityRequirement(name = "Bearer Authentication")
   @PutMapping("/user/update")
   public ResponseEntity<Object> updateUser(@RequestBody UpdateUserDTO updatedUser){
-    User currentUser = getCurrentUser();
-    currentUser.setUsername(updatedUser.getUsername());
-    currentUser.setEmail(updatedUser.getEmail());
+    try {
+      User currentUser = getCurrentUser();
+      currentUser.setUsername(updatedUser.getUsername());
+      currentUser.setEmail(updatedUser.getEmail());
+      currentUser.setPassword(updatedUser.getPassword());
 
-    String token = userService.updateUser(currentUser);
-    JSONObject responseJson = new JSONObject();
-    responseJson.put("token", token);
-    return ResponseEntity.ok(responseJson.toString());
+      String token = userService.updateUser(currentUser);
+      JSONObject responseJson = new JSONObject();
+      responseJson.put("token", token);
+      return ResponseEntity.ok(responseJson.toString());
+    } catch (UsernameNotFoundException e) {
+      return ResponseEntity.notFound().build();
+    } catch (IllegalArgumentException e) {
+      return ResponseEntity.badRequest().body(e.getMessage());
+    } catch (Exception e) {
+      return ResponseEntity.internalServerError().body("Une erreur s'est produite lors de la mise à jour de l'utilisateur.");
+    }
   }
 
   private User getCurrentUser() {

@@ -1,9 +1,14 @@
 import { AbstractControl, ValidatorFn } from '@angular/forms';
 
 // Fonction de validation du mot de passe
-export function passwordValidator(): ValidatorFn {
+export function passwordValidator(isRequired: boolean = true): ValidatorFn {
   return (control: AbstractControl): { [key: string]: any } | null => {
     const value = control.value || '';
+
+    // Si le champ n'est pas obligatoire et qu'il est vide, on le considère comme valide
+    if (!isRequired && value === '') {
+      return null;
+    }
 
     // Conditions de validation
     const hasMinLength = value.length >= 8;

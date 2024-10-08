@@ -27,15 +27,16 @@ public class AuthController {
 
   @PostMapping("auth/register")
   public ResponseEntity<String> createUser(@RequestBody User user) {
-
-    User createdUser = userService.createUser(user);
-    if (createdUser != null) {
-      String token = jwtService.generateToken(user.getEmail());
+    try {
+      User createdUser = userService.createUser(user);
+      String token = jwtService.generateToken(createdUser.getEmail());
       JSONObject responseJson = new JSONObject();
       responseJson.put("token", token);
       return ResponseEntity.ok(responseJson.toString());
-    } else {
-      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Informations incorrectes");
+    } catch (IllegalArgumentException e) {
+      return ResponseEntity.badRequest().body(e.getMessage());
+    } catch (Exception e) {
+      return ResponseEntity.internalServerError().body("Une erreur s'est produite lors de la création de l'utilisateur.");
     }
   }
 
