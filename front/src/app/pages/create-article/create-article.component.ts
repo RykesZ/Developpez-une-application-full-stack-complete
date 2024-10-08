@@ -11,7 +11,7 @@ import { Topic } from 'app/core/interfaces/topic.interface';
   templateUrl: './create-article.component.html',
   styleUrls: ['./create-article.component.scss']
 })
-export class CreateArticleComponent implements OnInit {
+export class CreateArticleComponent {
   articleForm: FormGroup;
   topics$: Observable<Topic[]>;
 
@@ -35,12 +35,6 @@ export class CreateArticleComponent implements OnInit {
     );
   }
 
-  ngOnInit(): void {
-    // this.articleForm.valueChanges.subscribe(value => {
-    //   console.log('Valeur du formulaire:', value);
-    // });
-  }
-
   async onSubmit(): Promise<void> {
     if (this.articleForm.valid) {
       try {
@@ -52,7 +46,6 @@ export class CreateArticleComponent implements OnInit {
             })
           )
         );
-        console.log('Article créé avec succès', response);
         this.router.navigate(['/articles']);
       } catch (error) {
         console.error('Erreur lors de la soumission', error);

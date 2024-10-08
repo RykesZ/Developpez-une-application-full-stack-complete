@@ -22,7 +22,6 @@ export class UserService {
     public updateUser(user: UpdateUserRequest): Observable<AuthSuccess> {
         return this.http.put(`${this.pathService}/update`, user).pipe(
             map((response: any) => {
-                console.log('Profil mis à jour avec succès');
                 return response as AuthSuccess;
             }),
             catchError((error) => {

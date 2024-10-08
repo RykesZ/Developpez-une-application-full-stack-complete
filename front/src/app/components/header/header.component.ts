@@ -31,7 +31,6 @@ export class HeaderComponent implements OnInit {
 
   openMenu() {
     this.isMenuOpen = true;
-    console.log(this.isMenuOpen);
   }
 
   closeMenu() {

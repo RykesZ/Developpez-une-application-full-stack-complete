@@ -30,11 +30,9 @@ export class SubscriptionService {
   subscribeToTopic(topicId: number): Observable<any> {
     return this.http.post(`${this.apiUrl}/subscribe/${topicId}`, {}).pipe(
       map((response: any) => {
-        console.log('Abonnement réussi au thème', topicId);
         return response;
       }),
       catchError((error) => {
-        console.error('Erreur lors de l\'abonnement au thème', error);
         return of(null);  // Renvoie une valeur null en cas d'erreur
       })
     );
@@ -44,7 +42,6 @@ export class SubscriptionService {
   unsubscribeFromTopic(topicId: number): Observable<any> {
     return this.http.post(`${this.apiUrl}/unsubscribe/${topicId}`, {}).pipe(
       map((response: any) => {
-        console.log('Désabonnement réussi du thème', topicId);
         return response;
       }),
       catchError((error) => {

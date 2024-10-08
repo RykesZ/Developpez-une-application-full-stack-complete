@@ -88,7 +88,6 @@ export class ProfileComponent implements OnInit {
   onUnsubscribe(topicId: number): void {
     this.subscriptionService.unsubscribeFromTopic(topicId).subscribe({
       next: () => {
-        console.log('Désabonnement réussi');
         this.subscriptions$.subscribe(subscriptions => {
           // Filtrer les abonnements pour exclure celui qui a été désabonné
           const filteredSubscriptions = subscriptions.filter(sub => sub.id !== topicId);
