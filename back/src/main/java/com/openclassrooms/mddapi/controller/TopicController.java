@@ -3,10 +3,8 @@ package com.openclassrooms.mddapi.controller;
 import com.openclassrooms.mddapi.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import com.openclassrooms.mddapi.service.ITopicService;
@@ -62,6 +60,7 @@ public class TopicController {
 	private User getCurrentUser() {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (authentication == null || !(authentication.getPrincipal() instanceof User)) {
+			// Exception gérée par GlobalExceptionHandler
 			throw new RuntimeException("User not authenticated or invalid authentication type");
 		}
 		return (User) authentication.getPrincipal();

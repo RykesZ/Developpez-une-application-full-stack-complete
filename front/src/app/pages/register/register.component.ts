@@ -17,7 +17,7 @@ import { tap, switchMap, catchError, throwError } from 'rxjs';
 })
 export class RegisterComponent {
   registerForm: FormGroup;
-  public onError = false;
+  public errorMessage: string | null = null;
 
   constructor(
     private fb: FormBuilder,
@@ -49,7 +49,8 @@ export class RegisterComponent {
           this.router.navigate(['/articles']);
         }),
         catchError((error) => {
-          this.onError = true;
+          this.errorMessage = error.error || 'Échec de l\'inscription.';
+          this.registerForm.enable();
           return throwError(() => new Error('Registration failed'));
         })
       ).subscribe();

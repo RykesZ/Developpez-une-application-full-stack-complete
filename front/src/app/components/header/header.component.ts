@@ -1,18 +1,19 @@
 import { BreakpointObserver } from '@angular/cdk/layout';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { SessionService } from 'app/core/services/session.service';
-import { Observable, tap } from 'rxjs';
+import { Observable, Subject, takeUntil, tap } from 'rxjs';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss']
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent implements OnInit, OnDestroy {
 
   public isHandset: boolean = false;
-  public $isLogged: Observable<boolean>;
   public isMenuOpen: boolean = false;
+  public isLogged$: Observable<boolean>;
+  private destroy$ = new Subject<void>();
 
   constructor(
     private sessionService: SessionService,
@@ -20,21 +21,28 @@ export class HeaderComponent implements OnInit {
   ) { }
   
   ngOnInit(): void {
-    this.$isLogged = this.sessionService.$isLogged().pipe(
+    this.isLogged$ = this.sessionService.isLogged$().pipe(
       tap(isLogged => console.log('Is logged (from session service):', isLogged))
     );
 
-    this.breakpointObserver.observe(['(max-width: 900px)']).subscribe(result => {
+    this.breakpointObserver.observe(['(max-width: 900px)'])
+    .pipe(takeUntil(this.destroy$))
+    .subscribe(result => {
       this.isHandset = result.matches;
     });
   }
 
-  openMenu() {
+  openMenu(): void {
     this.isMenuOpen = true;
   }
 
-  closeMenu() {
+  closeMenu(): void {
     this.isMenuOpen = false;
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
 }

@@ -16,7 +16,7 @@ import { tap, switchMap, catchError, throwError, firstValueFrom } from 'rxjs';
 })
 export class LoginComponent {
   loginForm: FormGroup;
-  public onError = false;
+  public errorMessage: string | null = null;
 
   constructor(
     private fb: FormBuilder,
@@ -33,25 +33,29 @@ export class LoginComponent {
 
   async onSubmit(): Promise<void> {
     if (this.loginForm.valid) {
-      try {
-        const loginRequest = this.loginForm.value as LoginRequest;
-  
-        // Authentification et récupération du token avec firstValueFrom
-        const response: AuthSuccess = await firstValueFrom(this.authService.login(loginRequest));
-        localStorage.setItem('token', response.token);
-  
-        // Récupération des informations de l'utilisateur après connexion
-        const user: User = await firstValueFrom(this.userService.me());
-  
-        // Mise à jour de la session et navigation
-        this.sessionService.logIn(user, response.token);
-        this.sessionService['checkInitialLoginState']();
-        await this.router.navigate(['/articles']);
-  
-      } catch (error) {
-        this.onError = true;
-        console.error('Login failed', error);
-      }
+      this.loginForm.disable();
+      const loginRequest = this.loginForm.value as LoginRequest;
+      let token = '';
+
+
+      this.authService.login(loginRequest).pipe(
+        tap((response: AuthSuccess) => {
+          token = response.token;
+          localStorage.setItem('token', token);
+        }),
+        switchMap(() => this.userService.me()), // Récupérer les infos de l'utilisateur connecté
+        tap((user: User) => {
+          this.sessionService.logIn(user, token); // Mettre à jour la session avec les infos utilisateur et le token
+          this.sessionService['checkInitialLoginState']();
+          this.router.navigate(['/articles']); // Rediriger vers la page des articles
+        }),
+        catchError((error) => {
+          // Gestion de l'erreur, on affiche le message d'erreur et on réactive le formulaire
+          this.errorMessage = error.error || 'Échec de la connexion.';
+          this.loginForm.enable(); // Réactiver le formulaire après l'erreur
+          return throwError(() => new Error('Login failed'));
+        })
+      ).subscribe();
     }
   }
   

@@ -13,7 +13,7 @@ export class SessionService {
     this.checkInitialLoginState();
   }
 
-  private checkInitialLoginState() {
+  private checkInitialLoginState(): void {
     const token = localStorage.getItem('token');
     if (token) {
       this.isLoggedSubject.next(true);
@@ -27,11 +27,11 @@ export class SessionService {
     }
   }
 
-  public $isLogged(): Observable<boolean> {
+  public isLogged$(): Observable<boolean> {
     return this.isLoggedSubject.asObservable();
   }
 
-  public $user(): Observable<User | undefined> {
+  public user$(): Observable<User | undefined> {
     return this.userSubject.asObservable();
   }
 

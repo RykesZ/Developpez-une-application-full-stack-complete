@@ -1,6 +1,6 @@
 <mat-toolbar>
     <img src="/assets/logo_p6.png" alt="logo" class="logo" routerLink="/"/>
-    <div *ngIf="$isLogged | async " class="loggedUserButtons">
+    <div *ngIf="isLogged$ | async " class="loggedUserButtons">
         <div class="wideScreenButtons" *ngIf="!isHandset">
           <a routerLink="/articles" routerLinkActive="active">Articles</a>
           <a routerLink="/topics" routerLinkActive="active">Thèmes</a>

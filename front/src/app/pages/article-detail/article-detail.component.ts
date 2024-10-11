@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ArticleService } from '../../core/services/article.service';
 import { Article } from 'app/core/interfaces/article.interface';
 import { Comment } from 'app/core/interfaces/comment.interface';
-import { BehaviorSubject, catchError, Observable, of, switchMap, tap } from 'rxjs';
+import { BehaviorSubject, catchError, Observable, of, Subject, switchMap, takeUntil, tap } from 'rxjs';
 import { CommentService } from 'app/core/services/comment.service';
 
 @Component({
@@ -11,11 +11,12 @@ import { CommentService } from 'app/core/services/comment.service';
   templateUrl: './article-detail.component.html',
   styleUrls: ['./article-detail.component.scss']
 })
-export class ArticleDetailComponent implements OnInit {
+export class ArticleDetailComponent implements OnInit, OnDestroy {
   article$: Observable<Article>;
   comments$: Observable<Comment[]>;
   private commentsSubject = new BehaviorSubject<Comment[]>([]);
   newComment: string = '';
+  private destroy$ = new Subject<void>();
 
   constructor(
     private route: ActivatedRoute,
@@ -33,13 +34,14 @@ export class ArticleDetailComponent implements OnInit {
             return of(null);
           })
         );
-      })
+      }),
+      takeUntil(this.destroy$)
     );
 
     this.getComments();
   }
 
-  getComments() {
+  getComments(): void {
     this.comments$ = this.route.params.pipe(
       switchMap(params => {
         const id = +params['id'];
@@ -50,11 +52,12 @@ export class ArticleDetailComponent implements OnInit {
             return of([]);
           })
         );
-      })
+      }),
+      takeUntil(this.destroy$)
     );
   }
 
-  submitComment() {
+  submitComment(): void {
     if (this.newComment.trim()) {
       this.article$.pipe(
         switchMap(article => {
@@ -76,8 +79,14 @@ export class ArticleDetailComponent implements OnInit {
         catchError(error => {
           console.error('Erreur lors de l\'ajout du commentaire', error);
           return of(null);
-        })
+        }),
+        takeUntil(this.destroy$)
       ).subscribe();
     }
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

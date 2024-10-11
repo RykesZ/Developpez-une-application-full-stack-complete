@@ -49,7 +49,7 @@
         <button mat-raised-button color="primary" type="submit" class="submit-button" [disabled]="registerForm.invalid" [ngClass]="{ 'input-error': registerForm.get('password')?.invalid && registerForm.get('password')?.touched }">
           S'inscrire
         </button>
-        <span *ngIf="onError" class="error">An error occurred</span>
+        <span *ngIf="errorMessage" class="error">{{ errorMessage }}</span>
       </form>
     </div>
 </div>

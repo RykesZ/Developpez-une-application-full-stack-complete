@@ -15,7 +15,7 @@ export class AlreadyLogged implements CanActivate {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     
-    return this.sessionService.$isLogged().pipe(
+    return this.sessionService.isLogged$().pipe(
       take(1),
       map(isLogged => {
         if (!isLogged) {

@@ -46,7 +46,7 @@ export class AppComponent implements OnInit, OnDestroy {
   }
   
   public $isLogged(): Observable<boolean> {
-    return this.sessionService.$isLogged();
+    return this.sessionService.isLogged$();
   }
 
   ngOnDestroy(): void {

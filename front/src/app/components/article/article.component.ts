@@ -12,7 +12,7 @@ export class ArticleComponent {
 
   constructor(private router: Router) {}
 
-  navigateToDetail() {
+  navigateToDetail(): void {
     if (this.article && this.article.id) {
       this.router.navigate(['/article-detail', this.article.id]);
     } else {

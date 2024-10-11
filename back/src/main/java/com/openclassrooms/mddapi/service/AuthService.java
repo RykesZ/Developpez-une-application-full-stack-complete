@@ -21,7 +21,7 @@ public class AuthService {
   private BCryptPasswordEncoder passwordEncoder;
 
   private static final Pattern EMAIL_PATTERN = Pattern.compile(
-          "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$");
+          "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$");
 
   public User authenticateUser(String identifier, String password) {
 
@@ -31,17 +31,17 @@ public class AuthService {
     if (EMAIL_PATTERN.matcher(identifier).matches()) {
       // If the identifier is a valid email format, find by email
       user = userRepository.findUserByEmail(identifier)
-              .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + identifier));
+              .orElseThrow(() -> new UsernameNotFoundException("Utilisateur inconnu avec l'email : " + identifier));
     } else {
       // Otherwise, treat it as a username and find by username
       user = userRepository.findUserByUsername(identifier)
-              .orElseThrow(() -> new UsernameNotFoundException("User not found with username: " + identifier));
+              .orElseThrow(() -> new UsernameNotFoundException("Utilisateur inconnu avec le nom d'utilisateur : " + identifier));
     }
 
     if (user != null && passwordEncoder.matches(password, user.getPassword())) {
       return user;
     } else {
-      return null;
+      throw new IllegalArgumentException("Identifiants incorrects");
     }
   }
 

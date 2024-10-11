@@ -9,10 +9,6 @@ import { Topic } from '../interfaces/topic.interface';
 })
 export class SubscriptionService {
   private apiUrl = 'api/topics';
-  private subscriptions = [
-    { id: 1, title: 'Titre du thème', description: 'Description: lorem ipsum is simply dummy text...' },
-    { id: 2, title: 'Titre du thème', description: 'Description: lorem ipsum is simply dummy text...' }
-  ];
 
   constructor(private http: HttpClient) {}
 
@@ -45,7 +41,6 @@ export class SubscriptionService {
         return response;
       }),
       catchError((error) => {
-        console.error('Erreur lors du désabonnement du thème', error);
         return of(null);  // Renvoie une valeur null en cas d'erreur
       })
     );

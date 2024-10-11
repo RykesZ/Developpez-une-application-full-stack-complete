@@ -48,6 +48,7 @@ public class ArticleController {
     private User getCurrentUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null || !(authentication.getPrincipal() instanceof User)) {
+            // Throwing RuntimeException which will be caught by GlobalExceptionHandler
             throw new RuntimeException("User not authenticated or invalid authentication type");
         }
         return (User) authentication.getPrincipal();

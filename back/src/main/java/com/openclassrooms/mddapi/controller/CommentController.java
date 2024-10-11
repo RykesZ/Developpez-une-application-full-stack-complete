@@ -4,14 +4,13 @@ import com.openclassrooms.mddapi.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import com.openclassrooms.mddapi.service.ICommentService;
 import com.openclassrooms.mddapi.dto.CommentDTO;
 import com.openclassrooms.mddapi.dto.CreateCommentDTO;
+
 import java.util.List;
 
 @RestController
@@ -36,12 +35,13 @@ public class CommentController {
         CommentDTO createdComment = commentService.createComment(currentUser.getId(), createCommentDto);
         return ResponseEntity.ok(createdComment);
     }
+
     private User getCurrentUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null || !(authentication.getPrincipal() instanceof User)) {
+            // Throwing a runtime exception which will be handled by the GlobalExceptionHandler
             throw new RuntimeException("User not authenticated or invalid authentication type");
         }
         return (User) authentication.getPrincipal();
     }
-
 }

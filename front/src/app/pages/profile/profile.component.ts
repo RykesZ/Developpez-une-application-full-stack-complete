@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { UserService } from 'app/core/services/user.service';
 import { SubscriptionService } from 'app/core/services/subscription.service';
-import { catchError, firstValueFrom, Observable, of } from 'rxjs';
+import { catchError, firstValueFrom, Observable, of, Subject, takeUntil } from 'rxjs';
 import { User } from '../../core/interfaces/user.interface';
 import { Topic } from 'app/core/interfaces/topic.interface';
 import { AuthService } from 'app/core/services/auth.service';
@@ -18,11 +18,12 @@ import { passwordValidator } from 'app/core/validators/passwordValidator.validat
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.scss']
 })
-export class ProfileComponent implements OnInit {
+export class ProfileComponent implements OnInit, OnDestroy {
   profileForm: FormGroup;
   public onError = false;
   public onSuccess = false;
   subscriptions$: Observable<Topic[]>;
+  private destroy$ = new Subject<void>();
 
   constructor(
     private fb: FormBuilder,
@@ -37,16 +38,20 @@ export class ProfileComponent implements OnInit {
       email: ['', [Validators.required, Validators.email]],
       password: ['', [passwordValidator(false)]]
     });
+  }
+
+  public ngOnInit(): void {
     this.subscriptions$ = this.subscriptionService.getUserSubscriptions().pipe(
       catchError(error => {
         console.error('Erreur lors du chargement des thèmes', error);
         return of([]);
-      })
+      }),
+      takeUntil(this.destroy$)
     );
-  }
 
-  public ngOnInit(): void {
-    this.userService.me().subscribe(
+    this.userService.me().pipe(
+      takeUntil(this.destroy$)
+    ).subscribe(
       (user: User) => this.profileForm.patchValue({
         username: user.username,
         email: user.email
@@ -88,7 +93,9 @@ export class ProfileComponent implements OnInit {
   }
 
   onUnsubscribe(topicId: number): void {
-    this.subscriptionService.unsubscribeFromTopic(topicId).subscribe({
+    this.subscriptionService.unsubscribeFromTopic(topicId).pipe(
+      takeUntil(this.destroy$) // Ajout de takeUntil ici
+    ).subscribe({
       next: () => {
         this.subscriptions$.subscribe(subscriptions => {
           // Filtrer les abonnements pour exclure celui qui a été désabonné
@@ -100,5 +107,9 @@ export class ProfileComponent implements OnInit {
       error: (error) => console.error('Erreur lors du désabonnement', error)
     });
   }
-  
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }  
 }
